@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Minyan Am Echad — Selichot da meia-noite</title>
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#030711">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="Minyan Am Echad — Selichot da meia-noite">
 <meta property="og:description" content="Confirma anônimo pra esta noite. Beit Yaakov · 3 minutos antes de chatzot · no máximo 32 minutos de reza.">
 <meta property="og:image" content="https://minyan-am-echad.vercel.app/og.png">
@@ -32,7 +34,7 @@
       radial-gradient(1.5px 1.5px at 88% 22%, rgba(232,207,148,.30) 50%, transparent 51%),
       radial-gradient(1px 1px at 8% 30%, rgba(242,237,226,.22) 50%, transparent 51%),
       radial-gradient(1px 1px at 52% 18%, rgba(79,209,217,.25) 50%, transparent 51%),
-      radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) fixed var(--night);
+      radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) var(--night);
     color:var(--ivory); font:16px/1.6 "Hanken Grotesk",system-ui,sans-serif;
     min-height:100vh; padding:34px 18px 44px; display:flex; flex-direction:column; align-items:center; text-align:center;
   }
@@ -168,7 +170,7 @@
   // "sábado 22" = noite de sábado). No banco a chave é a MADRUGADA = noite + 1 dia.
   var MESES = [
     {rotulo:"Elul · agosto", ano:2026, mes:8, de:15, ate:31},
-    {rotulo:"Setembro, até Yom Kipur", ano:2026, mes:9, de:1, ate:19}
+    {rotulo:"Setembro · até Yom Kipur", ano:2026, mes:9, de:1, ate:19}
   ];
 
   function noiteAlvo(){
@@ -247,7 +249,7 @@
       m.innerHTML = "minyan garantido, b\"H. <b>Cada um a mais é mais força</b>";
     } else {
       m.className = "meta-linha";
-      m.innerHTML = "precisamos de "+META+" · faltam <b>"+(META-p.confirmados)+"</b>";
+      m.innerHTML = "precisamos de "+META+" · "+(p.confirmados === 0 ? "<b>seja o primeiro a confirmar</b>" : "faltam <b>"+(META-p.confirmados)+"</b>");
     }
     var b = $("btnConf");
     b.disabled = false;
@@ -256,7 +258,7 @@
     if (typeof p.streak === "number"){
       $("fraseCorrente").innerHTML = p.streak > 0
         ? "<b>"+p.streak+"</b> "+(p.streak===1?"noite seguida":"noites seguidas")+" com minyan. Hoje a gente não quebra."
-        : "A corrente acende a primeira bolinha esta noite.";
+        : "A corrente recomeça esta noite.";
     }
     if (p.noites) pintarCalendario(p.noites);
     if (p.aviso){ $("avisoTexto").textContent = p.aviso; $("cardAviso").style.display = "block"; }
