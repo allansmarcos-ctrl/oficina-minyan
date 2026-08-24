@@ -310,6 +310,27 @@
   atualizar(false);
   setInterval(function(){ if (!document.hidden) atualizar(false); }, 60000);
   document.addEventListener("visibilitychange", function(){ if (!document.hidden) atualizar(false); });
+
+  // ---- acompanhamento anônimo da visita (aparelho, nunca pessoa): tempo e rolagem
+  var VISITA = null, rolouMax = 0, t0 = Date.now();
+  function medirRolagem(){
+    var h = document.documentElement;
+    var pct = Math.round(100 * (window.scrollY + window.innerHeight) / h.scrollHeight);
+    if (pct > rolouMax) rolouMax = Math.min(100, pct);
+  }
+  addEventListener("scroll", medirRolagem, {passive:true});
+  function fecharVisita(saindo){
+    if (VISITA == null) return;
+    fetch(SB_URL+"/rest/v1/rpc/minyan_visita_fecha", {
+      method:"POST",
+      headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+      body: JSON.stringify({p_id:VISITA, p_device:DEVICE, p_duracao:Math.round((Date.now()-t0)/1000), p_rolou:rolouMax}),
+      keepalive: !!saindo
+    }).catch(function(){});
+  }
+  rpc("minyan_visita_abre", {p_device:DEVICE}).then(function(id){ VISITA = id; medirRolagem(); }).catch(function(){});
+  setInterval(function(){ if (!document.hidden) fecharVisita(false); }, 15000);
+  document.addEventListener("visibilitychange", function(){ if (document.hidden) fecharVisita(true); });
 })();
 </script>
 </body>

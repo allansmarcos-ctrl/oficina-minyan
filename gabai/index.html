@@ -45,6 +45,10 @@
   .vieram{width:64px!important;padding:7px 8px!important;font-size:13px!important}
   .escondido{display:none}
   a.voltar{color:var(--gold-bright);font-size:12.5px;text-decoration:none;letter-spacing:.06em}
+  .metricas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .met{background:rgba(3,7,17,.5);border:1px solid rgba(201,164,92,.25);border-radius:9px;padding:10px 8px;text-align:center}
+  .met b{display:block;font-family:"Fraunces",Georgia,serif;font-size:24px;color:var(--gold-bright);font-weight:500}
+  .met span{font-size:11px;color:var(--ivory-dim);letter-spacing:.04em}
 </style>
 </head>
 <body>
@@ -64,6 +68,12 @@
       <div class="num" id="num">…</div>
       <div class="num-label" id="numLabel">confirmados até agora</div>
       <div class="status" id="stGeral"></div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Acompanhamento do site</div>
+      <div class="metricas" id="metricas">carregando…</div>
+      <div class="status" style="text-align:left">Anônimo: conta aparelhos, nunca pessoas. "Leram até o fim" = rolaram 90% da página.</div>
     </div>
 
     <div class="card">
@@ -153,7 +163,18 @@
     $("noites").innerHTML = html;
   }
 
+  function minSeg(s){ if (!s) return "0s"; if (s < 60) return s+"s"; return Math.floor(s/60)+"min"+(s%60 ? (s%60)+"s" : ""); }
+  function pintarMetricas(m){
+    $("metricas").innerHTML =
+      "<div class='met'><b>"+m.visitas_noite+"</b><span>visitas nesta noite</span></div>"
+      + "<div class='met'><b>"+m.aparelhos_noite+"</b><span>aparelhos diferentes</span></div>"
+      + "<div class='met'><b>"+minSeg(m.tempo_medio_s)+"</b><span>tempo médio na página</span></div>"
+      + "<div class='met'><b>"+m.rolaram_ate_o_fim_pct+"%</b><span>leram até o fim</span></div>"
+      + "<div class='met'><b>"+m.visitas_total+"</b><span>visitas desde a estreia</span></div>"
+      + "<div class='met'><b>"+m.aparelhos_total+"</b><span>aparelhos desde a estreia</span></div>";
+  }
   function atualizar(){
+    rpc("minyan_adm_metricas", {p_senha:SENHA}).then(pintarMetricas).catch(function(){});
     return rpc("minyan_painel", {p_noite:NOITE}).then(pintar)
       .catch(function(e){ $("stGeral").textContent = "não carregou: "+e.message; });
   }
