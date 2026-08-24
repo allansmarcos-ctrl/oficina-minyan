@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gabai — Minyan Am Echad</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗝️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --night:#030711; --night-deep:#0e1b38; --ivory:#f2ede2; --ivory-dim:#b9b4a6;
+    --gold:#c9a45c; --gold-bright:#e8cf94; --turquoise:#4fd1d9; --ok:#7ddf9a; --nao:#a04537;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) fixed var(--night);
+    color:var(--ivory); font:15px/1.55 "Hanken Grotesk",system-ui,sans-serif;
+    min-height:100vh; padding:28px 16px 60px; display:flex; flex-direction:column; align-items:center}
+  .kicker{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;text-align:center}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--gold-bright);font-size:30px;margin:8px 0 18px;text-align:center}
+  .card{width:min(460px,100%);background:rgba(233,207,148,.045);border:1px solid rgba(201,164,92,.35);border-radius:14px;padding:20px 18px;margin-bottom:14px}
+  .sec-title{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  input[type=password], textarea, input[type=number]{width:100%;padding:12px;border-radius:9px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
+  input:focus-visible, textarea:focus-visible, button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  textarea{resize:vertical;min-height:64px}
+  .btn{display:block;width:100%;margin-top:12px;padding:13px;border:none;border-radius:10px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#211703;font:600 15px "Hanken Grotesk",sans-serif;cursor:pointer}
+  .btn.sec{background:none;border:1px solid rgba(201,164,92,.5);color:var(--ivory-dim);font-weight:500}
+  .btn[disabled]{opacity:.5;cursor:default}
+  .status{font-size:12px;color:var(--ivory-dim);margin-top:8px;min-height:15px;text-align:center}
+  .num{font-family:"Fraunces",Georgia,serif;font-size:44px;line-height:1;color:var(--gold-bright);text-align:center}
+  .num-label{color:var(--ivory-dim);font-size:13px;text-align:center;margin-top:2px}
+  .aviso-atual{font-size:13px;color:var(--turquoise);margin:8px 0 4px;border-left:3px solid var(--turquoise);padding-left:10px;text-align:left}
+  .noite-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid rgba(201,164,92,.18);flex-wrap:wrap}
+  .noite-row:first-of-type{border-top:none}
+  .noite-rotulo{flex:1;min-width:120px;font-size:13.5px}
+  .noite-rotulo small{display:block;color:var(--ivory-dim);font-size:11px}
+  .chip{width:13px;height:13px;border-radius:50%;flex:none}
+  .ch-teve{background:var(--ok)} .ch-nao{background:var(--nao)} .ch-sem{background:rgba(242,237,226,.14)}
+  .ch-vazio{border:1px dashed rgba(185,180,166,.5)}
+  .mini{padding:7px 9px;border-radius:7px;border:1px solid rgba(201,164,92,.35);background:#111b33;color:var(--ivory);font:500 12px "Hanken Grotesk",sans-serif;cursor:pointer}
+  .mini.on{background:var(--gold);color:#211703;border-color:var(--gold)}
+  .mini.off2{color:var(--ivory-dim)}
+  .vieram{width:64px!important;padding:7px 8px!important;font-size:13px!important}
+  .escondido{display:none}
+  a.voltar{color:var(--gold-bright);font-size:12.5px;text-decoration:none;letter-spacing:.06em}
+</style>
+</head>
+<body>
+  <div class="kicker">Bancada do gabai</div>
+  <h1>Minyan Am Echad</h1>
+
+  <div class="card" id="cardSenha">
+    <div class="sec-title">Entrar</div>
+    <input type="password" id="inSenha" placeholder="senha do gabai" autocomplete="current-password">
+    <button class="btn" id="btnEntrar">Entrar</button>
+    <div class="status" id="stSenha"></div>
+  </div>
+
+  <div id="painel" class="escondido">
+    <div class="card">
+      <div class="sec-title">Esta noite</div>
+      <div class="num" id="num">…</div>
+      <div class="num-label" id="numLabel">confirmados até agora</div>
+      <div class="status" id="stGeral"></div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Aviso de hoje</div>
+      <div class="aviso-atual escondido" id="avisoAtual"></div>
+      <textarea id="inAviso" placeholder="ex.: hoje tem bolinho depois da Selichot"></textarea>
+      <button class="btn" id="btnAviso">Publicar aviso de hoje</button>
+      <button class="btn sec" id="btnLimparAviso">Tirar o aviso do ar</button>
+      <div class="status">o aviso sai do ar sozinho quando a noite vira</div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">As noites: marca depois de cada uma</div>
+      <div class="status" style="text-align:left;margin:0 0 6px">Verde = teve minyan (pode anotar quantos vieram) · vermelho = não teve · "sem" = noite sem Selichot (feriado). Sextas o site já cinza sozinho.</div>
+      <div id="noites"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:6px"><a class="voltar" href="../">← ver o site como a chevre vê</a></div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var SB_URL = "https://yuxpaionwjufeosasppx.supabase.co";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1eHBhaW9ud2p1ZmVvc2FzcHB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzU1ODYsImV4cCI6MjA5Nzc1MTU4Nn0.1SXvSrQxfimObWXnXexdQLlHUWfnwBHmXPKsQhANwAY";
+  var $ = function(id){ return document.getElementById(id); };
+  var DIAS_SEM = ["dom","seg","ter","qua","qui","sex","sáb"];
+  var SENHA = localStorage.getItem("mae-gabai") || "";
+  var dados = null;
+
+  function rpc(nome, corpo){
+    return fetch(SB_URL+"/rest/v1/rpc/"+nome, {
+      method:"POST",
+      headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+      body: JSON.stringify(corpo)
+    }).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.message || nome); return j; }); });
+  }
+
+  function noiteAlvo(){
+    var p = {};
+    new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hour12:false})
+      .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    var d = new Date(Date.UTC(+p.year, +p.month-1, +p.day));
+    if (+p.hour >= 1) d.setUTCDate(d.getUTCDate()+1);
+    return d.toISOString().slice(0,10);
+  }
+  var NOITE = noiteAlvo();
+
+  function madrugadasDaTemporada(){
+    // da estreia (madrugada 16/08) até a noite-alvo, mais recente primeiro
+    var lista = [], d = new Date(NOITE+"T00:00:00Z"), fim = new Date("2026-08-16T00:00:00Z");
+    while (d >= fim){ lista.push(d.toISOString().slice(0,10)); d = new Date(d); d.setUTCDate(d.getUTCDate()-1); }
+    return lista;
+  }
+
+  function rotulo(iso){
+    var m = new Date(iso+"T00:00:00Z"), noite = new Date(m); noite.setUTCDate(noite.getUTCDate()-1);
+    var ehShabat = m.getUTCDay() === 6;
+    return { titulo: "noite de "+DIAS_SEM[noite.getUTCDay()]+" "+noite.getUTCDate()+"/"+(noite.getUTCMonth()+1),
+             sub: (iso === NOITE ? "esta noite" : "madrugada de "+m.getUTCDate()+"/"+(m.getUTCMonth()+1)) + (ehShabat ? " · leil Shabat, normalmente sem Selichot" : "") };
+  }
+
+  function pintar(p){
+    dados = p;
+    $("num").textContent = p.confirmados;
+    $("numLabel").textContent = "confirmados pra esta noite ("+rotulo(NOITE).titulo+")";
+    if (p.aviso){ $("avisoAtual").textContent = "no ar: "+p.aviso; $("avisoAtual").classList.remove("escondido"); }
+    else { $("avisoAtual").classList.add("escondido"); }
+    var mapa = {}; (p.noites||[]).forEach(function(n){ mapa[n.noite] = n; });
+    var html = "";
+    madrugadasDaTemporada().forEach(function(iso){
+      var r = mapa[iso], rot = rotulo(iso);
+      var chip = "ch-vazio";
+      if (r && r.fechou === true) chip = "ch-teve";
+      else if (r && r.fechou === false) chip = "ch-nao";
+      else if (r) chip = "ch-sem";
+      html += "<div class='noite-row' data-iso='"+iso+"'>"
+        + "<span class='chip "+chip+"'></span>"
+        + "<span class='noite-rotulo'>"+rot.titulo+"<small>"+rot.sub+"</small></span>"
+        + "<button class='mini"+(r && r.fechou===true?" on":"")+"' data-acao='teve'>teve</button>"
+        + "<button class='mini"+(r && r.fechou===false?" on":"")+"' data-acao='nao'>não</button>"
+        + "<button class='mini off2"+(r && r.fechou==null?" on":"")+"' data-acao='sem'>sem</button>"
+        + "<button class='mini off2' data-acao='limpar'>limpar</button>"
+        + "<input class='vieram' type='number' inputmode='numeric' placeholder='nº' value='"+(r && r.vieram != null ? r.vieram : "")+"' title='quantos vieram (grava com o teve)'>"
+        + "</div>";
+    });
+    $("noites").innerHTML = html;
+  }
+
+  function atualizar(){
+    return rpc("minyan_painel", {p_noite:NOITE}).then(pintar)
+      .catch(function(e){ $("stGeral").textContent = "não carregou: "+e.message; });
+  }
+
+  function entrar(){
+    var s = $("inSenha").value.trim() || SENHA;
+    if (!s){ $("stSenha").textContent = "escreve a senha"; return; }
+    $("btnEntrar").disabled = true; $("stSenha").textContent = "conferindo…";
+    rpc("minyan_adm_testar", {p_senha:s}).then(function(ok){
+      if (ok === true){
+        SENHA = s; localStorage.setItem("mae-gabai", s);
+        $("cardSenha").classList.add("escondido"); $("painel").classList.remove("escondido");
+        atualizar();
+      } else { $("stSenha").textContent = "senha errada"; }
+    }).catch(function(){ $("stSenha").textContent = "não deu — confere a internet"; })
+      .then(function(){ $("btnEntrar").disabled = false; });
+  }
+  $("btnEntrar").addEventListener("click", entrar);
+  $("inSenha").addEventListener("keydown", function(e){ if (e.key === "Enter") entrar(); });
+
+  $("btnAviso").addEventListener("click", function(){
+    var t = $("inAviso").value.trim();
+    if (!t){ $("stGeral").textContent = "escreve o aviso primeiro"; return; }
+    rpc("minyan_adm_aviso", {p_senha:SENHA, p_texto:t}).then(function(p){ $("inAviso").value = ""; pintar(p); $("stGeral").textContent = "aviso no ar ✓"; })
+      .catch(trataErro);
+  });
+  $("btnLimparAviso").addEventListener("click", function(){
+    rpc("minyan_adm_aviso", {p_senha:SENHA, p_texto:""}).then(function(p){ pintar(p); $("stGeral").textContent = "aviso fora do ar ✓"; })
+      .catch(trataErro);
+  });
+
+  $("noites").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    var row = e.target.closest(".noite-row"), iso = row.getAttribute("data-iso");
+    var acao = b.getAttribute("data-acao");
+    var vieram = parseInt(row.querySelector(".vieram").value, 10); if (isNaN(vieram)) vieram = null;
+    var q;
+    if (acao === "limpar") q = rpc("minyan_adm_apagar", {p_senha:SENHA, p_noite:iso});
+    else q = rpc("minyan_adm_noite", {p_senha:SENHA, p_noite:iso,
+      p_fechou: acao === "teve" ? true : (acao === "nao" ? false : null),
+      p_vieram: acao === "teve" ? vieram : null});
+    q.then(function(p){ pintar(p); $("stGeral").textContent = "gravado ✓"; }).catch(trataErro);
+  });
+
+  function trataErro(e){
+    if (/senha errada/.test(e.message)){
+      localStorage.removeItem("mae-gabai"); SENHA = "";
+      $("painel").classList.add("escondido"); $("cardSenha").classList.remove("escondido");
+      $("stSenha").textContent = "a senha mudou. Entra de novo";
+    } else { $("stGeral").textContent = "não deu: "+e.message; }
+  }
+
+  if (SENHA){ $("inSenha").value = SENHA; entrar(); }
+  setInterval(function(){ if (!document.hidden && dados) atualizar(); }, 30000);
+})();
+</script>
+</body>
+</html>

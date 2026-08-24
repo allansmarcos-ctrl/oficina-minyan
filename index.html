@@ -6,96 +6,153 @@
 <title>Minyan Am Echad — Selichot da meia-noite</title>
 <meta name="robots" content="noindex">
 <meta property="og:title" content="Minyan Am Echad — Selichot da meia-noite">
-<meta property="og:description" content="Confirma anônimo pra esta noite. Beit Yaakov · 3 minutos antes de chatzot · no máximo 35 minutos de reza.">
+<meta property="og:description" content="Confirma anônimo pra esta noite. Beit Yaakov · 3 minutos antes de chatzot · no máximo 32 minutos de reza.">
+<meta property="og:image" content="https://minyan-am-echad.vercel.app/og.png">
+<meta property="og:url" content="https://minyan-am-echad.vercel.app/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕯️</text></svg>">
 <script>
   // links antigos da oficina (com a config no hash) continuam funcionando: vão pro playground
   if (location.hash.length > 8) location.replace("oficina/" + location.hash);
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600&display=swap">
 <style>
   :root{
-    --night:#030711; --night-deep:#0e1b38; --ivory:#f2ede2; --ivory-dim:#b9b4a6; --ok:#7ddf9a;
-    --ac:#d9a35a; --ac-bright:#f4c07a; --detail:#4fd1d9;
+    --night:#030711; --night-deep:#0e1b38; --ivory:#f2ede2; --ivory-dim:#b9b4a6;
+    --gold:#c9a45c; --gold-bright:#e8cf94; --turquoise:#4fd1d9;
+    --ok:#7ddf9a; --nao:#a04537;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   html,body{margin:0;padding:0}
   body{
-    background:radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) fixed var(--night);
+    background:
+      radial-gradient(1.5px 1.5px at 18% 12%, rgba(242,237,226,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 74% 7%, rgba(242,237,226,.28) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 88% 22%, rgba(232,207,148,.30) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 30%, rgba(242,237,226,.22) 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 18%, rgba(79,209,217,.25) 50%, transparent 51%),
+      radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) fixed var(--night);
     color:var(--ivory); font:16px/1.6 "Hanken Grotesk",system-ui,sans-serif;
-    min-height:100vh; padding:30px 18px 40px; display:flex; flex-direction:column; align-items:center; text-align:center;
+    min-height:100vh; padding:34px 18px 44px; display:flex; flex-direction:column; align-items:center; text-align:center;
   }
-  .kicker{font-size:11.5px;letter-spacing:.22em;color:var(--ac);text-transform:uppercase;font-weight:600}
-  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;color:var(--ac-bright);font-size:clamp(32px,8.5vw,50px);margin:10px 0 2px}
-  .sub{color:var(--ivory-dim);font-size:14.5px;margin:0 0 24px;max-width:430px}
-  .card{width:min(430px,100%);background:rgba(233,207,148,.045);border:1px solid rgba(201,164,92,.32);border-radius:14px;padding:24px 20px;margin-bottom:14px}
-  .num{font-family:"Fraunces",Georgia,serif;font-size:60px;line-height:1;color:var(--ac-bright);font-variant-numeric:tabular-nums}
-  .num.sobe{animation:acender .7s ease-out}
+  .kicker{font-family:"Fraunces",Georgia,serif;font-size:12.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;font-weight:400}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--gold-bright);font-size:clamp(34px,9vw,52px);margin:10px 0 4px;text-wrap:balance}
+  .sub{color:var(--ivory-dim);font-size:14.5px;margin:0 0 18px;max-width:430px;text-wrap:balance}
+  .fio{width:min(160px,40vw);height:1px;background:rgba(201,164,92,.25);margin:2px auto 18px;position:relative}
+  .fio::after{content:"";position:absolute;left:50%;top:-2.5px;width:6px;height:6px;transform:translateX(-50%) rotate(45deg);background:var(--gold)}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+  .chips a{font:500 12.5px "Hanken Grotesk",sans-serif;letter-spacing:.08em;color:var(--gold-bright);text-decoration:none;border:1px solid rgba(201,164,92,.45);border-radius:99px;padding:7px 14px;background:rgba(3,7,17,.55);transition:border-color .25s ease,background .25s ease}
+  .chips a:hover{border-color:var(--gold);background:rgba(14,27,56,.75)}
+  section{scroll-margin-top:16px;width:min(430px,100%)}
+  .card{width:100%;background:rgba(233,207,148,.045);border:1px solid rgba(201,164,92,.35);border-radius:14px;padding:24px 20px;margin-bottom:14px}
+  .sec-title{font-family:"Fraunces",Georgia,serif;font-size:12.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:12px}
+  .num{font-family:"Fraunces",Georgia,serif;font-size:64px;line-height:1;color:var(--gold-bright);font-variant-numeric:tabular-nums}
+  .num.sobe{animation:acender .7s ease}
   .num-label{color:var(--ivory-dim);font-size:14px;margin-top:4px}
-  .meta-linha{font-size:12.5px;color:var(--ivory-dim);margin-top:6px}
-  .meta-linha b{color:var(--ac-bright)}
+  .meta-linha{font-size:12.5px;color:var(--ivory-dim);margin-top:8px;letter-spacing:.04em}
+  .meta-linha b{color:var(--gold-bright)}
   .meta-linha.forte b{color:var(--ok)}
-  .btn{display:block;width:100%;margin-top:16px;padding:14px;border:none;border-radius:10px;background:linear-gradient(180deg,var(--ac-bright),var(--ac));color:#211703;font:600 16px "Hanken Grotesk",sans-serif;cursor:pointer}
-  .btn.off{background:none;border:1px solid rgba(125,223,154,.55);color:var(--ok);font-weight:600}
-  .btn[disabled]{opacity:.55;cursor:default}
-  .btn:focus-visible{outline:2px solid var(--detail);outline-offset:2px}
-  .anon{font-size:12.5px;color:var(--ivory-dim);margin-top:12px;text-align:left;line-height:1.55}
-  .anon b{color:var(--detail)}
-  .status{font-size:12px;color:var(--ivory-dim);margin-top:8px;min-height:15px}
-  .sec-title{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ac);font-weight:600;margin-bottom:10px}
-  .hora{font-family:"Fraunces",Georgia,serif;font-size:44px;line-height:1;color:var(--ivory);font-variant-numeric:tabular-nums}
-  .hora-label{color:var(--ivory-dim);font-size:14px;margin-top:4px}
-  .regra35{margin-top:12px;font-size:14.5px;color:var(--ivory)}
-  .regra35 b{color:var(--ac-bright)}
-  .dots{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:330px;margin:0 auto}
-  .dot{width:14px;height:14px;border-radius:99px;background:var(--ok);box-shadow:0 0 7px rgba(125,223,154,.5)}
-  .dot.hoje{background:transparent;border:2px dashed rgba(125,223,154,.75);box-shadow:none}
-  .frase{margin-top:12px;font-family:"Fraunces",Georgia,serif;font-size:18px}
+  .btn{display:block;width:100%;margin-top:18px;padding:15px;border:none;border-radius:11px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#211703;font:600 16px "Hanken Grotesk",sans-serif;cursor:pointer;transition:filter .25s ease,transform .12s ease}
+  .btn:active{transform:scale(.985)}
+  .btn:hover{filter:brightness(1.06)}
+  .btn.off{background:rgba(3,7,17,.55);border:1px solid rgba(125,223,154,.55);color:var(--ok);font-weight:600}
+  .btn[disabled]{opacity:.5;cursor:default}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .anon{font-size:12.5px;color:var(--ivory-dim);margin-top:14px;text-align:left;line-height:1.6}
+  .anon b{color:var(--turquoise)}
+  .status{font-size:12px;color:var(--ivory-dim);margin-top:8px;min-height:15px;letter-spacing:.04em}
+  .aviso{border-left:3px solid var(--turquoise);text-align:left;padding:12px 15px;background:rgba(79,209,217,.06);border-radius:0 10px 10px 0;font-size:14.5px;display:none}
+  .aviso .tag{font-size:10.5px;letter-spacing:.22em;color:var(--turquoise);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px}
+  .hora{font-family:"Fraunces",Georgia,serif;font-size:48px;line-height:1;color:var(--ivory);font-variant-numeric:tabular-nums}
+  .hora-label{color:var(--ivory-dim);font-size:13.5px;margin-top:6px}
+  .regra35{margin-top:14px;font-size:14.5px;color:var(--ivory);border-top:1px solid rgba(201,164,92,.25);padding-top:13px}
+  .regra35 b{color:var(--gold-bright)}
+  .fonte-rav{font-size:11.5px;color:var(--ivory-dim);margin-top:6px;letter-spacing:.08em}
+  .mes-label{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:14px 0 8px;font-weight:400}
+  .mes-label:first-of-type{margin-top:2px}
+  .dias-cab{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:10.5px;color:var(--ivory-dim);letter-spacing:.1em;margin-bottom:6px}
+  .dias{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .dia{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-variant-numeric:tabular-nums;font-weight:500}
+  .c-teve{background:var(--ok);color:#06210f;box-shadow:0 0 9px rgba(125,223,154,.45)}
+  .c-nao{background:var(--nao);color:var(--ivory)}
+  .c-shabat,.c-sem{background:rgba(242,237,226,.07);color:rgba(185,180,166,.75)}
+  .c-hoje{border:2px dashed var(--gold-bright);color:var(--gold-bright);animation:pulsa 2.4s ease infinite}
+  .c-fut{border:1px solid rgba(201,164,92,.22);color:rgba(185,180,166,.6)}
+  .c-past{border:1px solid rgba(185,180,166,.25);color:rgba(185,180,166,.6)}
+  .frase{margin-top:14px;font-family:"Fraunces",Georgia,serif;font-size:18px}
   .frase b{color:var(--ok)}
-  .aviso{border-left:3px solid var(--detail);text-align:left;padding:10px 14px;background:rgba(79,209,217,.06);border-radius:0 9px 9px 0;font-size:14.5px}
-  .aviso .tag{font-size:10.5px;letter-spacing:.18em;color:var(--detail);text-transform:uppercase;font-weight:600;display:block;margin-bottom:3px}
-  footer{margin-top:14px;color:var(--ivory-dim);font-size:12px;line-height:1.7}
-  footer .assina{color:var(--ac);font-weight:600}
-  .heb{font-size:13px;color:var(--ac-bright)}
-  @keyframes acender{from{opacity:0;transform:translateY(10px) scale(.96);filter:brightness(2)}to{opacity:1;transform:none;filter:none}}
-  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+  .legenda{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--ivory-dim);letter-spacing:.04em}
+  .legenda i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px;font-style:normal}
+  .lg-teve{background:var(--ok)} .lg-nao{background:var(--nao)} .lg-shabat{background:rgba(242,237,226,.14)}
+  .lg-hoje{border:1.5px dashed var(--gold-bright);width:8px;height:8px}
+  .mes-aviso{border-left:3px solid var(--turquoise);text-align:left;padding:12px 15px;background:rgba(79,209,217,.06);border-radius:0 10px 10px 0;font-size:14.5px}
+  .mes-aviso .tag{font-size:10.5px;letter-spacing:.22em;color:var(--turquoise);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px}
+  footer{margin-top:16px;color:var(--ivory-dim);font-size:12px;line-height:1.8;letter-spacing:.04em}
+  footer .heb{font-family:"Fraunces",Georgia,serif;font-size:14px;color:var(--gold-bright);letter-spacing:.06em}
+  footer .assina{color:var(--gold);font-weight:600}
+  .nasce{animation:acender .8s ease backwards}
+  .nasce:nth-child(2){animation-delay:.06s}
+  section:nth-of-type(2) .card{animation-delay:.1s}
+  @keyframes acender{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  @keyframes pulsa{0%,100%{box-shadow:0 0 0 0 rgba(232,207,148,0)}50%{box-shadow:0 0 10px 1px rgba(232,207,148,.35)}}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-  <div class="kicker">Selichot da meia-noite · Beit Yaakov</div>
-  <h1>Minyan Am Echad</h1>
-  <p class="sub">Todo mundo junto na meia-noite — todas as noites até Yom Kipur, b'ezrat Hashem.</p>
+  <header class="nasce">
+    <div class="kicker">Selichot da meia-noite · Beit Yaakov</div>
+    <h1>Minyan Am Echad</h1>
+    <p class="sub">Todo mundo junto na meia-noite. Todas as noites até Yom Kipur, b'ezrat Hashem.</p>
+    <div class="fio"></div>
+    <nav class="chips">
+      <a href="#confirmar">Confirmar</a><a href="#hoje">Hoje à noite</a><a href="#corrente">A corrente</a>
+    </nav>
+  </header>
 
-  <div class="card">
-    <div class="num" id="num">…</div>
-    <div class="num-label">confirmados pra esta noite</div>
-    <div class="meta-linha" id="metaLinha"></div>
-    <button class="btn" id="btnConf" disabled>Confirmar presença — anônimo</button>
-    <div class="anon"><b>Anônimo de verdade.</b> Ninguém vê quem confirmou — o número só serve pros organizadores saberem se precisa correr atrás de mais gente. Tem chance de vir? <b>Já confirma</b>: é a confirmação que dá força pro minyan. Se não der, volta aqui e aperta de novo — ninguém fica sabendo.</div>
-    <div class="status" id="stConf"></div>
-  </div>
+  <section id="confirmar" class="nasce">
+    <div class="card">
+      <div class="num" id="num">…</div>
+      <div class="num-label">confirmados pra esta noite</div>
+      <div class="meta-linha" id="metaLinha"></div>
+      <button class="btn" id="btnConf" disabled>Confirmar presença (anônimo)</button>
+      <div class="anon"><b>Anônimo de verdade.</b> Ninguém vê quem confirmou: o número só serve pros organizadores saberem se precisa correr atrás de mais gente. Tem chance de vir? <b>Já confirma</b>, que é isso que dá força pro minyan. Se não der, volta aqui e aperta de novo. Ninguém fica sabendo.</div>
+      <div class="status" id="stConf"></div>
+    </div>
+    <div class="card aviso" id="cardAviso">
+      <span class="tag">Aviso de hoje</span><span id="avisoTexto"></span>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="sec-title">Hoje à noite</div>
-    <div class="hora" id="horaInicio">00:0—</div>
-    <div class="hora-label">começamos <span id="horaDet">3 minutos antes de chatzot</span></div>
-    <div class="meta-linha">conforme o Rav Ovadia Yossef</div>
-    <div class="regra35">Reza de <b>no máximo 35 minutos</b> — todo mundo sabe a hora que volta pra casa.</div>
-  </div>
+  <section id="hoje" class="nasce">
+    <div class="card">
+      <div class="sec-title">Hoje à noite</div>
+      <div class="hora" id="horaInicio">00:0—</div>
+      <div class="hora-label">começamos <span id="horaDet">3 minutos antes de chatzot</span></div>
+      <div class="regra35">Reza de <b>no máximo 32 minutos</b>. Todo mundo sabe a hora que volta pra casa.</div>
+      <div class="fonte-rav">conforme o Rav Ovadia Yossef</div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="sec-title">A corrente</div>
-    <div class="dots" id="dots"><span class="dot hoje" title="hoje — em aberto"></span></div>
-    <div class="frase" id="fraseCorrente">A corrente acende a primeira bolinha esta noite.</div>
-  </div>
+  <section id="corrente" class="nasce">
+    <div class="card">
+      <div class="sec-title">A corrente</div>
+      <div id="calendario"></div>
+      <div class="frase" id="fraseCorrente"></div>
+      <div class="legenda">
+        <span><i class="lg-teve"></i>teve minyan</span>
+        <span><i class="lg-nao"></i>não teve</span>
+        <span><i class="lg-shabat"></i>Shabat</span>
+        <span><i class="lg-hoje"></i>hoje</span>
+      </div>
+    </div>
+    <div class="mes-aviso">
+      <span class="tag">Pelo mês</span>
+      Shiurim do Rav antes da Selichot em algumas noites, comes e bebes depois, noites especiais. O aviso de cada dia sai no grupo.
+    </div>
+  </section>
 
-  <div class="card aviso">
-    <span class="tag">Pelo mês</span>
-    Shiurim do Rav antes da Selichot em algumas noites, comes e bebes depois, noites especiais — o aviso de cada dia sai no grupo.
-  </div>
-
-  <footer>
+  <footer class="nasce">
     <div class="heb" id="dataHeb"></div>
     <div>Selichot da meia-noite · Beit Yaakov</div>
     <div class="assina">construído por Kahal Am Echad</div>
@@ -107,8 +164,13 @@
   var SB_URL = "https://yuxpaionwjufeosasppx.supabase.co";
   var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1eHBhaW9ud2p1ZmVvc2FzcHB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzU1ODYsImV4cCI6MjA5Nzc1MTU4Nn0.1SXvSrQxfimObWXnXexdQLlHUWfnwBHmXPKsQhANwAY";
   var META = 10;
+  // temporada: células rotuladas pela NOITE (data civil do anoitecer, como a chevre fala:
+  // "sábado 22" = noite de sábado). No banco a chave é a MADRUGADA = noite + 1 dia.
+  var MESES = [
+    {rotulo:"Elul · agosto", ano:2026, mes:8, de:15, ate:31},
+    {rotulo:"Setembro, até Yom Kipur", ano:2026, mes:9, de:1, ate:19}
+  ];
 
-  // ---- a noite-alvo (São Paulo): depois da 01:00, "esta noite" já é a próxima
   function noiteAlvo(){
     var p = {};
     new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hour12:false})
@@ -119,7 +181,6 @@
   }
   var NOITE = noiteAlvo();
 
-  // ---- identidade anônima deste aparelho
   function uuid(){
     if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){
@@ -141,6 +202,40 @@
     }).then(function(r){ if(!r.ok) throw new Error(nome+" "+r.status); return r.json(); });
   }
 
+  function dataISO(ano, mes, dia){ return ano+"-"+(mes<10?"0":"")+mes+"-"+(dia<10?"0":"")+dia; }
+  var DIAS_SEM = ["dom","seg","ter","qua","qui","sex","sáb"];
+
+  function pintarCalendario(noites){
+    var mapa = {};
+    (noites||[]).forEach(function(n){ mapa[n.noite] = n; });
+    var html = "";
+    MESES.forEach(function(M){
+      html += "<div class='mes-label'>"+M.rotulo+"</div>";
+      html += "<div class='dias-cab'><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>";
+      html += "<div class='dias'>";
+      var primeiro = new Date(Date.UTC(M.ano, M.mes-1, M.de)).getUTCDay();
+      for (var v=0; v<primeiro; v++) html += "<span></span>";
+      for (var d=M.de; d<=M.ate; d++){
+        var noite = new Date(Date.UTC(M.ano, M.mes-1, d));
+        var dow = noite.getUTCDay();
+        var madrugada = new Date(noite); madrugada.setUTCDate(madrugada.getUTCDate()+1);
+        var iso = madrugada.toISOString().slice(0,10);
+        var r = mapa[iso], cls, titulo;
+        var rotuloNoite = "noite de "+DIAS_SEM[dow]+" "+d;
+        if (r && r.fechou === true){ cls = "c-teve"; titulo = rotuloNoite+": teve minyan"+(r.vieram?" ("+r.vieram+" pessoas)":""); }
+        else if (r && r.fechou === false){ cls = "c-nao"; titulo = rotuloNoite+": não teve"; }
+        else if (r){ cls = "c-sem"; titulo = rotuloNoite+": sem Selichot"; }
+        else if (dow === 5){ cls = "c-shabat"; titulo = "leil Shabat: não se diz Selichot"; }
+        else if (iso === NOITE){ cls = "c-hoje"; titulo = "esta noite, em aberto"; }
+        else if (iso < NOITE){ cls = "c-past"; titulo = rotuloNoite; }
+        else { cls = "c-fut"; titulo = rotuloNoite; }
+        html += "<span class='dia "+cls+"' title='"+titulo+"'>"+d+"</span>";
+      }
+      html += "</div>";
+    });
+    $("calendario").innerHTML = html;
+  }
+
   function pintar(p, anima){
     carregou = true;
     var n = $("num");
@@ -149,29 +244,33 @@
     var m = $("metaLinha");
     if (p.confirmados >= META){
       m.className = "meta-linha forte";
-      m.innerHTML = "minyan garantido, b\"H — <b>cada um a mais é mais força</b>";
+      m.innerHTML = "minyan garantido, b\"H. <b>Cada um a mais é mais força</b>";
     } else {
       m.className = "meta-linha";
       m.innerHTML = "precisamos de "+META+" · faltam <b>"+(META-p.confirmados)+"</b>";
     }
     var b = $("btnConf");
     b.disabled = false;
-    if (confirmado()){ b.className = "btn off"; b.textContent = "✓ Confirmado pra esta noite — apertar de novo desiste"; }
-    else { b.className = "btn"; b.textContent = "Confirmar presença — anônimo"; }
-    // corrente
-    var dots = "";
-    for (var i=0;i<p.streak;i++) dots += "<span class='dot'></span>";
-    dots += "<span class='dot hoje' title='hoje — em aberto'></span>";
-    $("dots").innerHTML = dots;
-    $("fraseCorrente").innerHTML = p.streak > 0
-      ? "<b>"+p.streak+"</b> "+(p.streak===1?"noite seguida":"noites seguidas")+" com minyan. Hoje a gente não quebra."
-      : "A corrente acende a primeira bolinha esta noite.";
+    if (confirmado()){ b.className = "btn off"; b.textContent = "✓ Confirmado pra esta noite. Apertar de novo desiste"; }
+    else { b.className = "btn"; b.textContent = "Confirmar presença (anônimo)"; }
+    if (typeof p.streak === "number"){
+      $("fraseCorrente").innerHTML = p.streak > 0
+        ? "<b>"+p.streak+"</b> "+(p.streak===1?"noite seguida":"noites seguidas")+" com minyan. Hoje a gente não quebra."
+        : "A corrente acende a primeira bolinha esta noite.";
+    }
+    if (p.noites) pintarCalendario(p.noites);
+    if (p.aviso){ $("avisoTexto").textContent = p.aviso; $("cardAviso").style.display = "block"; }
+    else { $("cardAviso").style.display = "none"; }
   }
 
   function atualizar(anima){
-    return rpc("minyan_placar", {p_noite:NOITE}).then(function(p){ pintar(p, anima); $("stConf").textContent = ""; })
+    return rpc("minyan_painel", {p_noite:NOITE}).then(function(p){
+        var primeira = !carregou;
+        pintar(p, anima);
+        if (primeira) $("stConf").textContent = "";
+      })
       .catch(function(){
-        if (!carregou){ $("num").textContent = "—"; $("stConf").textContent = "contador fora do ar — recarrega a página daqui a pouco"; }
+        if (!carregou){ $("num").textContent = "—"; $("stConf").textContent = "contador fora do ar. Recarrega a página daqui a pouco"; }
       });
   }
 
@@ -181,16 +280,15 @@
     var b = this; b.disabled = true;
     var desistindo = confirmado();
     rpc(desistindo ? "minyan_desistir" : "minyan_confirmar", {p_noite:NOITE, p_device:DEVICE})
-      .then(function(p){
+      .then(function(){
         localStorage.setItem("mae-conf-"+NOITE, desistindo ? "0" : "1");
-        pintar(p, !desistindo);
-        $("stConf").textContent = desistindo ? "desconfirmado — sem cobrança, sem vergonha" : "confirmado, anônimo. Esta noite conta com você.";
+        $("stConf").textContent = desistindo ? "desconfirmado, sem cobrança e sem vergonha" : "confirmado, anônimo. Esta noite conta com você.";
+        return atualizar(!desistindo);
       })
-      .catch(function(){ b.disabled = false; $("stConf").textContent = "não foi — confere a internet e tenta de novo"; })
+      .catch(function(){ b.disabled = false; $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; })
       .then(function(){ ocupado = false; });
   });
 
-  // ---- horário real (Hebcal): chatzot desta madrugada e data judaica da noite
   function hhmm(min){ min = ((min%1440)+1440)%1440; var h = Math.floor(min/60), m = min%60; return (h<10?"0":"")+h+":"+(m<10?"0":"")+m; }
   fetch("https://www.hebcal.com/zmanim?cfg=json&latitude=-23.5475&longitude=-46.63611&tzid=America/Sao_Paulo&date="+NOITE)
     .then(function(r){ return r.json(); })
@@ -207,7 +305,6 @@
     .then(function(c){ if (c.hebrew) $("dataHeb").textContent = "Selichot desta noite: "+c.hebrew; })
     .catch(function(){});
 
-  // ---- partida + placar vivo
   atualizar(false);
   setInterval(function(){ if (!document.hidden) atualizar(false); }, 60000);
   document.addEventListener("visibilitychange", function(){ if (!document.hidden) atualizar(false); });
