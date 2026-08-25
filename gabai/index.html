@@ -219,6 +219,16 @@
     q.then(function(p){ pintar(p); $("stGeral").textContent = "gravado ✓"; }).catch(trataErro);
   });
 
+  // o número de presentes grava sozinho: digitar quantos vieram já marca a noite como fechada
+  $("noites").addEventListener("change", function(e){
+    var inp = e.target.closest(".vieram"); if (!inp) return;
+    var row = e.target.closest(".noite-row"), iso = row.getAttribute("data-iso");
+    var vieram = parseInt(inp.value, 10); if (isNaN(vieram)) vieram = null;
+    rpc("minyan_adm_noite", {p_senha:SENHA, p_noite:iso, p_fechou:true, p_vieram:vieram})
+      .then(function(p){ pintar(p); $("stGeral").textContent = vieram == null ? "gravado ✓" : vieram + " pessoas gravadas ✓"; })
+      .catch(trataErro);
+  });
+
   function trataErro(e){
     if (/senha errada/.test(e.message)){
       localStorage.removeItem("mae-gabai"); SENHA = "";
