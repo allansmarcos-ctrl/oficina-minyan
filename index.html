@@ -63,6 +63,27 @@
   .btn.off{background:rgba(3,7,17,.55);border:1px solid rgba(125,223,154,.55);color:var(--ok);font-weight:600}
   .btn[disabled]{opacity:.5;cursor:default}
   .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .btn-nome{display:block;width:100%;margin-top:9px;padding:12px;border-radius:11px;border:1px solid rgba(201,164,92,.45);background:rgba(3,7,17,.5);color:var(--gold-bright);font:500 14px "Hanken Grotesk",sans-serif;cursor:pointer;transition:border-color .25s ease}
+  .btn-nome:hover{border-color:var(--gold)}
+  .btn-nome:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .form-nome{display:none;margin-top:12px;text-align:left;border-top:1px solid rgba(201,164,92,.25);padding-top:14px}
+  .form-nome input{width:100%;padding:12px;margin-bottom:8px;border-radius:10px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
+  .form-nome input:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  .form-nome input::placeholder{color:rgba(185,180,166,.6)}
+  .mini-nota{font-size:11.5px;color:var(--ivory-dim);line-height:1.6;margin-top:10px}
+  .mini-nota b{color:var(--gold-bright)}
+  .link-sec{display:block;width:100%;margin-top:10px;background:none;border:none;color:var(--ivory-dim);font:12.5px "Hanken Grotesk",sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .link-sec:hover{color:var(--ivory)}
+  .mais{display:none;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 14px;border:1px dashed rgba(201,164,92,.4);border-radius:11px;background:rgba(3,7,17,.35);text-align:left}
+  .mais-txt{font-size:13.5px;color:var(--ivory-dim);line-height:1.4}
+  .mais-txt b{color:var(--gold-bright)}
+  .mais-ctrl{display:flex;align-items:center;gap:10px;flex:none}
+  .mais-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(201,164,92,.5);background:rgba(3,7,17,.6);color:var(--gold-bright);font:600 17px "Hanken Grotesk",sans-serif;cursor:pointer;line-height:1;padding:0}
+  .mais-btn:hover{border-color:var(--gold)}
+  .mais-btn:disabled{opacity:.35;cursor:default}
+  .mais-ctrl b{font-family:"Fraunces",Georgia,serif;font-size:20px;color:var(--gold-bright);min-width:16px;text-align:center}
+  .sou-eu{display:none;font-size:12px;color:var(--ivory-dim);margin-top:12px;letter-spacing:.03em}
+  .sou-eu b{color:var(--gold-bright)}
   .nomes{display:none;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:14px}
   .pastilha{font-size:13px;color:var(--gold-bright);border:1px solid rgba(201,164,92,.5);background:rgba(3,7,17,.5);border-radius:99px;padding:5px 12px;animation:acender .5s ease backwards}
   .pastilha.anon{color:var(--ivory-dim);border-color:rgba(185,180,166,.3);border-style:dashed}
@@ -144,8 +165,28 @@
       <div class="nomes" id="nomes"></div>
       <div class="nomes-legenda" id="nomesLegenda"></div>
       <button class="btn" id="btnConf" disabled>Confirmar presença (anônimo)</button>
-      <div class="anon"><b>Anônimo de verdade.</b> Ninguém vê quem confirmou: o número só serve pros organizadores saberem se precisa correr atrás de mais gente. Tem chance de vir? <b>Já confirma</b>, que é isso que dá força pro minyan. Se não der, volta aqui e aperta de novo. Ninguém fica sabendo.</div>
+      <button class="btn-nome" id="btnNome" style="display:none">prefiro aparecer com meu nome</button>
+
+      <div class="form-nome" id="formNome">
+        <input type="text" id="inMeuNome" placeholder="seu nome, do jeito que te chamam" maxlength="40" autocomplete="given-name" enterkeyhint="done">
+        <input type="tel" id="inMeuZap" placeholder="WhatsApp (opcional)" maxlength="20" autocomplete="tel" inputmode="tel">
+        <button class="btn" id="btnSalvarNome">Confirmar com meu nome</button>
+        <div class="mini-nota"><b>Seu nome vai aparecer na lista desta noite</b>, junto de quem também abriu o jogo. O WhatsApp fica guardado só pros avisos que você pedir, ninguém vê ele em lugar nenhum, e dá pra apagar tudo quando quiser.</div>
+        <button class="link-sec" id="btnCancelaNome">deixa pra lá, quero continuar anônimo</button>
+      </div>
+
+      <div class="mais" id="cardMais">
+        <span class="mais-txt" id="maisTxt">vem alguém com você?</span>
+        <div class="mais-ctrl">
+          <button class="mais-btn" id="maisMenos" aria-label="tirar um">−</button>
+          <b id="maisN">0</b>
+          <button class="mais-btn" id="maisMais" aria-label="mais um">+</button>
+        </div>
+      </div>
+
+      <div class="anon"><b>Anônimo de verdade.</b> No anônimo ninguém vê quem apertou, nem os organizadores: o que chega aqui é só o número, pra gente saber se precisa correr atrás de mais alguém.<br><br>E a gente sabe como é. Ninguém quer prometer de tarde uma coisa que depende de como a noite vai estar. Então confirmar aqui quer dizer <b>eu topo</b>, e topar já é o que segura o minyan de pé. Se mais tarde não der, volta e aperta de novo: sai na hora, sem explicação e sem cobrança. Ninguém vai saber que era você.</div>
       <div class="status" id="stConf"></div>
+      <div class="sou-eu" id="souEu">você está cadastrado como <b id="souEuNome"></b> · <button class="link-sec" id="btnApagarCad" style="display:inline;width:auto;margin:0">apagar meu cadastro</button></div>
     </div>
     <div class="card aviso" id="cardAviso">
       <span class="tag">Aviso de hoje</span><span id="avisoTexto"></span>
@@ -250,6 +291,16 @@
   if (!DEVICE){ DEVICE = uuid(); localStorage.setItem("mae-device", DEVICE); }
   function confirmado(){ return localStorage.getItem("mae-conf-"+NOITE) === "1"; }
 
+  // o cadastro da pessoa mora no aparelho dela: o banco sorteia um código no
+  // cadastro e ele fica aqui. Ninguém cria senha, ninguém recebe SMS.
+  var PESSOA = localStorage.getItem("mae-pessoa") || null;
+  var MEU_NOME = localStorage.getItem("mae-pessoa-nome") || "";
+  function confirmadoNome(){ return PESSOA && localStorage.getItem("mae-nome-"+NOITE) === "1"; }
+  function marcaNome(v){ localStorage.setItem("mae-nome-"+NOITE, v ? "1" : "0"); }
+  // quantos a pessoa disse que traz junto (o banco guarda; aqui é só pra tela)
+  function meusMais(){ return parseInt(localStorage.getItem("mae-mais-"+NOITE) || "0", 10) || 0; }
+  function setMeusMais(n){ localStorage.setItem("mae-mais-"+NOITE, String(n)); }
+
   var $ = function(id){ return document.getElementById(id); };
   var carregou = false, ocupado = false;
 
@@ -314,10 +365,10 @@
     var box = $("nomes"), leg = $("nomesLegenda"), nomes = p.nominais || [];
     box.innerHTML = "";
     if (!nomes.length){ box.style.display = "none"; leg.style.display = "none"; return; }
-    nomes.forEach(function(nome, i){
+    nomes.forEach(function(n, i){
       var s = document.createElement("span");
       s.className = "pastilha"; s.style.animationDelay = (i*0.04)+"s";
-      s.textContent = nome;
+      s.textContent = n.mais > 0 ? n.nome + " +" + n.mais : n.nome;
       box.appendChild(s);
     });
     if (p.anonimos > 0){
@@ -329,6 +380,42 @@
     box.style.display = "flex";
     leg.textContent = "quem topou aparecer · o anônimo continua sendo o padrão";
     leg.style.display = "block";
+  }
+
+  // três estados de botão: anônimo, com nome, e o de quem já está na lista
+  function pintarBotoes(){
+    var b = $("btnConf"), n = $("btnNome");
+    b.disabled = false;
+    if (confirmadoNome()){
+      b.className = "btn off";
+      b.textContent = "✓ Na lista como " + MEU_NOME + ". Apertar de novo tira seu nome";
+      b.setAttribute("data-acao", "sai-nome");
+      n.style.display = "none";
+    } else if (confirmado()){
+      b.className = "btn off";
+      b.textContent = "✓ Confirmado pra esta noite. Apertar de novo desiste";
+      b.setAttribute("data-acao", "desistir");
+      n.style.display = "block";
+      n.textContent = PESSOA ? "aparecer com meu nome (" + MEU_NOME + ")" : "prefiro aparecer com meu nome";
+    } else {
+      b.className = "btn";
+      b.textContent = "Confirmar presença (anônimo)";
+      b.setAttribute("data-acao", "confirmar");
+      n.style.display = "block";
+      n.textContent = PESSOA ? "confirmar como " + MEU_NOME : "prefiro aparecer com meu nome";
+    }
+    if (PESSOA && MEU_NOME){ $("souEuNome").textContent = MEU_NOME; $("souEu").style.display = "block"; }
+    else { $("souEu").style.display = "none"; }
+
+    // "eu e mais um": só faz sentido depois de a pessoa estar dentro
+    var dentro = confirmado() || confirmadoNome(), m = dentro ? meusMais() : 0;
+    $("cardMais").style.display = dentro ? "flex" : "none";
+    $("maisN").textContent = m;
+    $("maisMenos").disabled = m <= 0;
+    $("maisMais").disabled = m >= 5;
+    $("maisTxt").innerHTML = m === 0
+      ? "vem alguém com você?"
+      : "você traz <b>" + m + "</b> " + (m === 1 ? "pessoa junto" : "pessoas junto");
   }
 
   function pintar(p, anima){
@@ -346,10 +433,7 @@
       m.innerHTML = "precisamos de "+META+" · "+(total === 0 ? "<b>seja o primeiro a confirmar</b>" : "faltam <b>"+(META-total)+"</b>");
     }
     pintarNomes(p);
-    var b = $("btnConf");
-    b.disabled = false;
-    if (confirmado()){ b.className = "btn off"; b.textContent = "✓ Confirmado pra esta noite. Apertar de novo desiste"; }
-    else { b.className = "btn"; b.textContent = "Confirmar presença (anônimo)"; }
+    pintarBotoes();
     if (typeof p.streak === "number"){
       $("fraseCorrente").innerHTML = p.streak > 0
         ? "<b>"+p.streak+"</b> "+(p.streak===1?"noite seguida":"noites seguidas")+" com minyan. Hoje a gente não quebra."
@@ -373,18 +457,141 @@
 
   $("btnConf").addEventListener("click", function(){
     if (ocupado || !carregou) return;
+    var acao = this.getAttribute("data-acao") || "confirmar";
     ocupado = true;
     var b = this; b.disabled = true;
-    var desistindo = confirmado();
-    ev(desistindo ? "desistir" : "confirmar");
-    rpc(desistindo ? "minyan_desistir" : "minyan_confirmar", {p_noite:NOITE, p_device:DEVICE})
-      .then(function(){
-        localStorage.setItem("mae-conf-"+NOITE, desistindo ? "0" : "1");
-        $("stConf").textContent = desistindo ? "desconfirmado, sem cobrança e sem vergonha" : "confirmado, anônimo. Esta noite conta com você.";
-        return atualizar(!desistindo);
+    var chamada, subiu = false;
+    if (acao === "sai-nome"){
+      chamada = rpc("minyan_desistir_nome", {p_noite:NOITE, p_pessoa:PESSOA});
+    } else if (acao === "desistir"){
+      ev("desistir");
+      chamada = rpc("minyan_desistir", {p_noite:NOITE, p_device:DEVICE});
+    } else {
+      ev("confirmar"); subiu = true;
+      chamada = rpc("minyan_confirmar", {p_noite:NOITE, p_device:DEVICE});
+    }
+    chamada.then(function(){
+        if (acao === "sai-nome"){
+          marcaNome(false); setMeusMais(0);
+          $("stConf").textContent = "seu nome saiu da lista, sem cobrança e sem vergonha";
+        } else if (acao === "desistir"){
+          localStorage.setItem("mae-conf-"+NOITE, "0"); setMeusMais(0);
+          $("stConf").textContent = "desconfirmado, sem cobrança e sem vergonha";
+        } else {
+          localStorage.setItem("mae-conf-"+NOITE, "1");
+          $("stConf").textContent = "confirmado, anônimo. Esta noite conta com você.";
+        }
+        return atualizar(subiu);
       })
       .catch(function(){ b.disabled = false; $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; })
       .then(function(){ ocupado = false; });
+  });
+
+  // ---- confirmar aparecendo com o nome
+  function soDigitos(s){ return (s||"").replace(/\D/g,""); }
+
+  function confirmarComNome(){
+    ev("confirmar", "nome");
+    var levava = meusMais();   // quem já tinha dito que traz gente não perde isso na troca
+    return rpc("minyan_confirmar_nome", {p_noite:NOITE, p_pessoa:PESSOA, p_device:DEVICE})
+      .then(function(p){
+        marcaNome(true);
+        localStorage.setItem("mae-conf-"+NOITE, "0"); // a linha anônima deste aparelho foi trocada pela com nome
+        $("formNome").style.display = "none";
+        $("stConf").textContent = "pronto, " + MEU_NOME + ". Seu nome está na lista desta noite.";
+        if (levava > 0) return rpc("minyan_mais", {p_noite:NOITE, p_quantos:levava, p_pessoa:PESSOA});
+        return p;
+      })
+      .then(function(p){ pintar(p, true); });
+  }
+
+  // eu e mais um
+  function mudarMais(d){
+    if (ocupado || !carregou) return;
+    var atual = meusMais(), novo = Math.max(0, Math.min(5, atual + d));
+    if (novo === atual) return;
+    ocupado = true;
+    var corpo = confirmadoNome()
+      ? {p_noite:NOITE, p_quantos:novo, p_pessoa:PESSOA}
+      : {p_noite:NOITE, p_quantos:novo, p_device:DEVICE};
+    rpc("minyan_mais", corpo)
+      .then(function(p){
+        setMeusMais(novo);
+        $("stConf").textContent = novo === 0
+          ? "só você, então. Já é o que importa."
+          : "anotado: você e mais " + novo + ". Isso é o que faz a noite virar.";
+        pintar(p, d > 0);
+      })
+      .catch(function(){ $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; })
+      .then(function(){ ocupado = false; });
+  }
+  $("maisMais").addEventListener("click", function(){ mudarMais(1); });
+  $("maisMenos").addEventListener("click", function(){ mudarMais(-1); });
+
+  $("btnNome").addEventListener("click", function(){
+    if (ocupado || !carregou) return;
+    if (PESSOA){
+      ocupado = true; this.disabled = true;
+      var n = this;
+      confirmarComNome()
+        .catch(function(e){
+          // cadastro apagado noutro lugar: recomeça pelo formulário
+          if (/cadastro/.test(e.message||"")){
+            PESSOA = null; MEU_NOME = "";
+            localStorage.removeItem("mae-pessoa"); localStorage.removeItem("mae-pessoa-nome");
+            pintarBotoes(); $("formNome").style.display = "block";
+          } else { $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; }
+        })
+        .then(function(){ ocupado = false; n.disabled = false; });
+    } else {
+      var f = $("formNome");
+      f.style.display = f.style.display === "block" ? "none" : "block";
+      if (f.style.display === "block") $("inMeuNome").focus();
+    }
+  });
+
+  $("btnCancelaNome").addEventListener("click", function(){ $("formNome").style.display = "none"; });
+
+  $("btnSalvarNome").addEventListener("click", function(){
+    if (ocupado) return;
+    var nome = $("inMeuNome").value.trim().replace(/\s+/g," ");
+    var zap  = $("inMeuZap").value.trim();
+    if (nome.length < 2){ $("stConf").textContent = "escreve seu nome pra gente saber quem chegou"; $("inMeuNome").focus(); return; }
+    if (zap && (soDigitos(zap).length < 10 || soDigitos(zap).length > 13)){
+      $("stConf").textContent = "esse WhatsApp parece incompleto. Pode deixar em branco também";
+      $("inMeuZap").focus(); return;
+    }
+    ocupado = true;
+    var b = this; b.disabled = true; $("stConf").textContent = "guardando…";
+    rpc("minyan_pessoa_criar", {p_nome:nome, p_telefone: zap || null})
+      .then(function(r){
+        PESSOA = r.pessoa; MEU_NOME = r.nome;
+        localStorage.setItem("mae-pessoa", PESSOA);
+        localStorage.setItem("mae-pessoa-nome", MEU_NOME);
+        ev("game_cadastro", "site");
+        return confirmarComNome();
+      })
+      .catch(function(){ $("stConf").textContent = "não deu pra guardar. Confere a internet e tenta de novo"; })
+      .then(function(){ ocupado = false; b.disabled = false; });
+  });
+
+  // apagar o cadastro: dois toques, porque some de vez
+  var armado = false;
+  $("btnApagarCad").addEventListener("click", function(){
+    var l = this;
+    if (!armado){
+      armado = true; l.textContent = "tem certeza? aperta de novo";
+      setTimeout(function(){ if (armado){ armado = false; l.textContent = "apagar meu cadastro"; } }, 6000);
+      return;
+    }
+    armado = false; l.textContent = "apagando…";
+    rpc("minyan_pessoa_apagar", {p_pessoa:PESSOA}).then(function(){
+      PESSOA = null; MEU_NOME = ""; marcaNome(false);
+      localStorage.removeItem("mae-pessoa"); localStorage.removeItem("mae-pessoa-nome");
+      l.textContent = "apagar meu cadastro";
+      $("stConf").textContent = "cadastro apagado. Seu nome saiu de todas as listas.";
+      return atualizar(false);
+    }).catch(function(){ l.textContent = "apagar meu cadastro"; $("stConf").textContent = "não deu. Tenta de novo"; });
   });
 
   function hhmm(min){ min = ((min%1440)+1440)%1440; var h = Math.floor(min/60), m = min%60; return (h<10?"0":"")+h+":"+(m<10?"0":"")+m; }

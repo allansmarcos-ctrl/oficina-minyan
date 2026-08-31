@@ -171,7 +171,8 @@
     $("num").textContent = total;
     var comNome = (p.nominais && p.nominais.length) || 0;
     $("numLabel").innerHTML = "confirmados pra esta noite ("+rotulo(NOITE).titulo+")"
-      + (p.anonimos != null ? "<br><span style='font-size:11.5px'>"+comNome+" com nome na tela · "+p.anonimos+" sem nome</span>" : "");
+      + (p.anonimos != null ? "<br><span style='font-size:11.5px'>"+comNome+" com nome na tela · "+p.anonimos+" sem nome"
+          + (TRAZIDOS ? " · "+TRAZIDOS+" "+(TRAZIDOS===1?"vem":"vêm")+" de carona com alguém" : "")+"</span>" : "");
     if (p.aviso){ $("avisoAtual").textContent = "no ar: "+p.aviso; $("avisoAtual").classList.remove("escondido"); }
     else { $("avisoAtual").classList.add("escondido"); }
     var mapa = {}; (p.noites||[]).forEach(function(n){ mapa[n.noite] = n; });
@@ -231,18 +232,26 @@
     }
     var html = "";
     lista.forEach(function(n){
+      var m = n.mais || 0;
       html += "<div class='nome-row' data-pessoa='"+txt(n.pessoa)+"'>"
         + "<span class='chip "+(n.publico ? "ch-teve" : "ch-sem")+"'></span>"
-        + "<span class='nome-nome'>"+txt(n.nome)
+        + "<span class='nome-nome'>"+txt(n.nome)+(m ? " <b style='color:var(--gold-bright)'>+"+m+"</b>" : "")
           + "<small class='"+(n.publico ? "pub" : "")+"'>"+(n.publico ? "aparece na lista do site" : "só soma no número")
-          + (n.origem === "site" ? " · cadastro dele" : "")+"</small></span>"
+          + (n.origem === "site" ? " · cadastro dele" : "")
+          + (m ? " · traz mais "+m : "")+"</small></span>"
+        + "<button class='mini' data-acao='mais' data-mais='"+m+"' title='quantos ele traz junto'>+"+(m || "")+"</button>"
         + "<button class='mini' data-acao='alternar' data-publico='"+(n.publico ? "1" : "0")+"'>"+(n.publico ? "esconder" : "mostrar")+"</button>"
         + "<button class='mini off2' data-acao='tirar'>tirar</button>"
         + "</div>";
     });
     $("listaNomes").innerHTML = html;
   }
-  function receber(d){ pintar(d.painel); pintarNomes(d.nomes); }
+  var TRAZIDOS = 0;
+  function receber(d){
+    TRAZIDOS = (d.anon_mais || 0);
+    (d.nomes || []).forEach(function(n){ TRAZIDOS += (n.mais || 0); });
+    pintar(d.painel); pintarNomes(d.nomes);
+  }
 
   function atualizar(){
     rpc("minyan_adm_metricas2", {p_senha:SENHA}).then(pintarMetricas).catch(function(){});
@@ -296,9 +305,11 @@
   $("listaNomes").addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
     var row = e.target.closest(".nome-row"), pessoa = row.getAttribute("data-pessoa");
-    var q = b.getAttribute("data-acao") === "tirar"
-      ? rpc("minyan_adm_nome_tirar", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa})
-      : rpc("minyan_adm_nome_publico", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa, p_publico: b.getAttribute("data-publico") === "0"});
+    var acao = b.getAttribute("data-acao"), q;
+    if (acao === "tirar") q = rpc("minyan_adm_nome_tirar", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa});
+    else if (acao === "mais") q = rpc("minyan_adm_nome_mais", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa,
+                                      p_quantos: (parseInt(b.getAttribute("data-mais"),10) + 1) % 6});
+    else q = rpc("minyan_adm_nome_publico", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa, p_publico: b.getAttribute("data-publico") === "0"});
     q.then(function(d){ receber(d); $("stGeral").textContent = "gravado ✓"; }).catch(trataErro);
   });
 
