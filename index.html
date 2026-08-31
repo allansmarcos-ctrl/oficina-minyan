@@ -251,7 +251,7 @@
     var m = $("metaLinha");
     if (p.confirmados >= META){
       m.className = "meta-linha forte";
-      m.innerHTML = "minyan garantido, b\"H. <b>Cada um a mais é mais força</b>";
+      m.innerHTML = "temos "+p.confirmados+", b\"H. <b>traga o "+(p.confirmados+1)+"º: hoje a corrente cresce</b>";
     } else {
       m.className = "meta-linha";
       m.innerHTML = "precisamos de "+META+" · "+(p.confirmados === 0 ? "<b>seja o primeiro a confirmar</b>" : "faltam <b>"+(META-p.confirmados)+"</b>");
