@@ -22,7 +22,7 @@
   h1{font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--gold-bright);font-size:30px;margin:8px 0 18px;text-align:center}
   .card{width:min(460px,100%);background:rgba(233,207,148,.045);border:1px solid rgba(201,164,92,.35);border-radius:14px;padding:20px 18px;margin-bottom:14px}
   .sec-title{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-  input[type=password], textarea, input[type=number]{width:100%;padding:12px;border-radius:9px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
+  input[type=password], input[type=text], textarea, input[type=number]{width:100%;padding:12px;border-radius:9px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
   input:focus-visible, textarea:focus-visible, button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
   textarea{resize:vertical;min-height:64px}
   .btn{display:block;width:100%;margin-top:12px;padding:13px;border:none;border-radius:10px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#211703;font:600 15px "Hanken Grotesk",sans-serif;cursor:pointer}
@@ -49,6 +49,17 @@
   .met{background:rgba(3,7,17,.5);border:1px solid rgba(201,164,92,.25);border-radius:9px;padding:10px 8px;text-align:center}
   .met b{display:block;font-family:"Fraunces",Georgia,serif;font-size:24px;color:var(--gold-bright);font-weight:500}
   .met span{font-size:11px;color:var(--ivory-dim);letter-spacing:.04em}
+  .dupla{display:flex;gap:8px}
+  .dupla .btn{margin-top:10px}
+  .nome-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid rgba(201,164,92,.18)}
+  .nome-row:first-child{border-top:none}
+  .nome-nome{flex:1;min-width:90px;font-size:14px}
+  .nome-nome small{display:block;font-size:11px;color:var(--ivory-dim);letter-spacing:.04em}
+  .nome-nome small.pub{color:var(--ok)}
+  .vazio{color:var(--ivory-dim);font-size:12.5px;text-align:center;padding:12px 0}
+  .cliques{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .clique{background:rgba(3,7,17,.5);border:1px solid rgba(201,164,92,.25);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--ivory-dim)}
+  .clique b{color:var(--gold-bright);font-weight:600;font-family:"Fraunces",Georgia,serif}
 </style>
 </head>
 <body>
@@ -71,9 +82,21 @@
     </div>
 
     <div class="card">
+      <div class="sec-title">Confirmou por fora? Lança aqui</div>
+      <input type="text" id="inNome" placeholder="nome de quem confirmou no zap" autocomplete="off" maxlength="40">
+      <div class="dupla">
+        <button class="btn" id="btnSoNumero">Só soma no número</button>
+        <button class="btn sec" id="btnAparece">Aparece na lista</button>
+      </div>
+      <div class="status" style="text-align:left">O nome só vai pro site quando você aperta "aparece na lista". Use nos que deixaram; na dúvida, "só soma no número", que ninguém é exposto sem querer.</div>
+      <div id="listaNomes"></div>
+    </div>
+
+    <div class="card">
       <div class="sec-title">Acompanhamento do site</div>
       <div class="metricas" id="metricas">carregando…</div>
-      <div class="status" style="text-align:left">Anônimo: conta aparelhos, nunca pessoas. "Leram até o fim" = rolaram 90% da página.</div>
+      <div class="cliques" id="cliques"></div>
+      <div class="status" style="text-align:left">Anônimo: conta aparelhos, nunca pessoas. "Leram até o fim" = rolaram 90% da página. "Apertaram" = dos aparelhos que abriram nesta noite, quantos clicaram em confirmar.</div>
     </div>
 
     <div class="card">
@@ -136,10 +159,16 @@
              sub: (iso === NOITE ? "esta noite" : "madrugada de "+m.getUTCDate()+"/"+(m.getUTCMonth()+1)) + (ehShabat ? " · leil Shabat, normalmente sem Selichot" : "") };
   }
 
+  // aceita os dois painéis: o antigo (p.confirmados) e o novo (p.total)
+  function totalDe(p){ return (p && p.total != null) ? p.total : (p ? p.confirmados : 0); }
+
   function pintar(p){
     dados = p;
-    $("num").textContent = p.confirmados;
-    $("numLabel").textContent = "confirmados pra esta noite ("+rotulo(NOITE).titulo+")";
+    var total = totalDe(p);
+    $("num").textContent = total;
+    var comNome = (p.nominais && p.nominais.length) || 0;
+    $("numLabel").innerHTML = "confirmados pra esta noite ("+rotulo(NOITE).titulo+")"
+      + (p.anonimos != null ? "<br><span style='font-size:11.5px'>"+comNome+" com nome na tela · "+p.anonimos+" sem nome</span>" : "");
     if (p.aviso){ $("avisoAtual").textContent = "no ar: "+p.aviso; $("avisoAtual").classList.remove("escondido"); }
     else { $("avisoAtual").classList.add("escondido"); }
     var mapa = {}; (p.noites||[]).forEach(function(n){ mapa[n.noite] = n; });
@@ -164,18 +193,54 @@
   }
 
   function minSeg(s){ if (!s) return "0s"; if (s < 60) return s+"s"; return Math.floor(s/60)+"min"+(s%60 ? (s%60)+"s" : ""); }
+  var NOMES_CLIQUE = {
+    confirmar:"apertaram confirmar", desistir:"desistiram", compartilhar:"compartilharam",
+    menu_confirmar:"menu: confirmar", menu_hoje:"menu: hoje à noite", menu_corrente:"menu: a corrente",
+    menu_tora:"menu: as 13 middot", tora_abriu:"abriram a Torá do décimo",
+    game_abriu:"abriram o convite", game_tela:"telas do convite", game_regra:"escolheram regra",
+    game_cadastro:"se cadastraram", game_fim:"terminaram o convite", game_saiu:"saíram no meio"
+  };
   function pintarMetricas(m){
     $("metricas").innerHTML =
       "<div class='met'><b>"+m.visitas_noite+"</b><span>visitas nesta noite</span></div>"
       + "<div class='met'><b>"+m.aparelhos_noite+"</b><span>aparelhos diferentes</span></div>"
       + "<div class='met'><b>"+minSeg(m.tempo_medio_s)+"</b><span>tempo médio na página</span></div>"
       + "<div class='met'><b>"+m.rolaram_ate_o_fim_pct+"%</b><span>leram até o fim</span></div>"
-      + "<div class='met'><b>"+m.visitas_total+"</b><span>visitas desde a estreia</span></div>"
+      + "<div class='met'><b>"+(m.apertaram_pct != null ? m.apertaram_pct : 0)+"%</b><span>apertaram confirmar</span></div>"
       + "<div class='met'><b>"+m.aparelhos_total+"</b><span>aparelhos desde a estreia</span></div>";
+    var c = m.cliques_noite || {}, t = m.cliques_total || {}, html = "", vazio = true;
+    Object.keys(NOMES_CLIQUE).forEach(function(k){
+      if (!c[k] && !t[k]) return;
+      vazio = false;
+      html += "<span class='clique'><b>"+(c[k]||0)+"</b> "+NOMES_CLIQUE[k]+" <span style='opacity:.55'>("+(t[k]||0)+" no total)</span></span>";
+    });
+    $("cliques").innerHTML = vazio ? "<span class='clique'>nenhum clique registrado ainda nesta noite</span>" : html;
   }
+
+  function txt(s){ var d = document.createElement("span"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function pintarNomes(lista){
+    if (!lista || !lista.length){
+      $("listaNomes").innerHTML = "<div class='vazio'>ninguém lançado na mão nesta noite</div>";
+      return;
+    }
+    var html = "";
+    lista.forEach(function(n){
+      html += "<div class='nome-row' data-pessoa='"+txt(n.pessoa)+"'>"
+        + "<span class='chip "+(n.publico ? "ch-teve" : "ch-sem")+"'></span>"
+        + "<span class='nome-nome'>"+txt(n.nome)
+          + "<small class='"+(n.publico ? "pub" : "")+"'>"+(n.publico ? "aparece na lista do site" : "só soma no número")
+          + (n.origem === "site" ? " · cadastro dele" : "")+"</small></span>"
+        + "<button class='mini' data-acao='alternar' data-publico='"+(n.publico ? "1" : "0")+"'>"+(n.publico ? "esconder" : "mostrar")+"</button>"
+        + "<button class='mini off2' data-acao='tirar'>tirar</button>"
+        + "</div>";
+    });
+    $("listaNomes").innerHTML = html;
+  }
+  function receber(d){ pintar(d.painel); pintarNomes(d.nomes); }
+
   function atualizar(){
-    rpc("minyan_adm_metricas", {p_senha:SENHA}).then(pintarMetricas).catch(function(){});
-    return rpc("minyan_painel", {p_noite:NOITE}).then(pintar)
+    rpc("minyan_adm_metricas2", {p_senha:SENHA}).then(pintarMetricas).catch(function(){});
+    return rpc("minyan_adm_noite_lista", {p_senha:SENHA, p_noite:NOITE}).then(receber)
       .catch(function(e){ $("stGeral").textContent = "não carregou: "+e.message; });
   }
 
@@ -198,12 +263,37 @@
   $("btnAviso").addEventListener("click", function(){
     var t = $("inAviso").value.trim();
     if (!t){ $("stGeral").textContent = "escreve o aviso primeiro"; return; }
-    rpc("minyan_adm_aviso", {p_senha:SENHA, p_texto:t}).then(function(p){ $("inAviso").value = ""; pintar(p); $("stGeral").textContent = "aviso no ar ✓"; })
+    rpc("minyan_adm_aviso", {p_senha:SENHA, p_texto:t}).then(function(){ $("inAviso").value = ""; atualizar(); $("stGeral").textContent = "aviso no ar ✓"; })
       .catch(trataErro);
   });
   $("btnLimparAviso").addEventListener("click", function(){
-    rpc("minyan_adm_aviso", {p_senha:SENHA, p_texto:""}).then(function(p){ pintar(p); $("stGeral").textContent = "aviso fora do ar ✓"; })
+    rpc("minyan_adm_aviso", {p_senha:SENHA, p_texto:""}).then(function(){ atualizar(); $("stGeral").textContent = "aviso fora do ar ✓"; })
       .catch(trataErro);
+  });
+
+  function lancarNome(publico){
+    var nome = $("inNome").value.trim();
+    if (!nome){ $("stGeral").textContent = "escreve o nome primeiro"; $("inNome").focus(); return; }
+    $("btnSoNumero").disabled = true; $("btnAparece").disabled = true;
+    rpc("minyan_adm_nome_add", {p_senha:SENHA, p_noite:NOITE, p_nome:nome, p_publico:!!publico})
+      .then(function(d){
+        receber(d); $("inNome").value = ""; $("inNome").focus();
+        $("stGeral").textContent = nome + (publico ? " entrou na lista do site ✓" : " somou no número ✓");
+      })
+      .catch(trataErro)
+      .then(function(){ $("btnSoNumero").disabled = false; $("btnAparece").disabled = false; });
+  }
+  $("btnSoNumero").addEventListener("click", function(){ lancarNome(false); });
+  $("btnAparece").addEventListener("click", function(){ lancarNome(true); });
+  $("inNome").addEventListener("keydown", function(e){ if (e.key === "Enter") lancarNome(false); });
+
+  $("listaNomes").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    var row = e.target.closest(".nome-row"), pessoa = row.getAttribute("data-pessoa");
+    var q = b.getAttribute("data-acao") === "tirar"
+      ? rpc("minyan_adm_nome_tirar", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa})
+      : rpc("minyan_adm_nome_publico", {p_senha:SENHA, p_noite:NOITE, p_pessoa:pessoa, p_publico: b.getAttribute("data-publico") === "0"});
+    q.then(function(d){ receber(d); $("stGeral").textContent = "gravado ✓"; }).catch(trataErro);
   });
 
   $("noites").addEventListener("click", function(e){
@@ -216,7 +306,7 @@
     else q = rpc("minyan_adm_noite", {p_senha:SENHA, p_noite:iso,
       p_fechou: acao === "teve" ? true : (acao === "nao" ? false : null),
       p_vieram: acao === "teve" ? vieram : null});
-    q.then(function(p){ pintar(p); $("stGeral").textContent = "gravado ✓"; }).catch(trataErro);
+    q.then(function(){ atualizar(); $("stGeral").textContent = "gravado ✓"; }).catch(trataErro);
   });
 
   // o número de presentes grava sozinho: digitar quantos vieram já marca a noite como fechada
@@ -225,7 +315,7 @@
     var row = e.target.closest(".noite-row"), iso = row.getAttribute("data-iso");
     var vieram = parseInt(inp.value, 10); if (isNaN(vieram)) vieram = null;
     rpc("minyan_adm_noite", {p_senha:SENHA, p_noite:iso, p_fechou:true, p_vieram:vieram})
-      .then(function(p){ pintar(p); $("stGeral").textContent = vieram == null ? "gravado ✓" : vieram + " pessoas gravadas ✓"; })
+      .then(function(){ atualizar(); $("stGeral").textContent = vieram == null ? "gravado ✓" : vieram + " pessoas gravadas ✓"; })
       .catch(trataErro);
   });
 
