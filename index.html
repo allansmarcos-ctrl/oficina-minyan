@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#030711">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="Minyan Am Echad · Selichot da meia-noite">
-<meta property="og:description" content="Confirma anônimo pra esta noite. Beit Yaakov · 3 minutos antes de chatzot · no máximo 32 minutos de reza.">
+<meta property="og:description" content="Confirma anônimo pra esta noite. Beit Yaakov · 3 minutos antes de chatzot · no máximo 35 minutos de reza.">
 <meta property="og:image" content="https://minyan-am-echad.vercel.app/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -100,6 +100,17 @@
   .regra35{margin-top:14px;font-size:14.5px;color:var(--ivory);border-top:1px solid rgba(201,164,92,.25);padding-top:13px}
   .regra35 b{color:var(--gold-bright)}
   .fonte-rav{font-size:11.5px;color:var(--ivory-dim);margin-top:6px;letter-spacing:.08em}
+  /* a gaveta: aberta na primeira visita, fechada nas seguintes */
+  details.abre{margin-top:13px;border-top:1px solid rgba(201,164,92,.25);padding-top:12px;text-align:left}
+  details.abre summary{cursor:pointer;font-size:12.5px;color:var(--gold);letter-spacing:.06em;list-style:none;padding:2px 0}
+  details.abre summary::-webkit-details-marker{display:none}
+  details.abre summary::after{content:" ▾";font-size:11px}
+  details.abre[open] summary::after{content:" ▴"}
+  details.abre summary:hover{color:var(--gold-bright)}
+  details.abre summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+  .agora{margin-top:12px;padding:9px 12px;border-radius:10px;background:rgba(79,209,217,.07);border:1px solid rgba(79,209,217,.25);font-size:13.5px;color:var(--ivory);letter-spacing:.02em}
+  .agora b{color:var(--turquoise);font-variant-numeric:tabular-nums}
+  .agora span{color:var(--ivory-dim)}
   .tora{text-align:left}
   .tora .sec-title{text-align:center}
   .heb-verso{font-size:23px;line-height:1.9;color:var(--gold-bright);text-align:center;direction:rtl;margin:2px 0 4px;font-family:"Times New Roman",serif}
@@ -153,7 +164,7 @@
     <p class="sub">Todo mundo junto na meia-noite. Todas as noites até Yom Kipur, b'ezrat Hashem.</p>
     <div class="fio"></div>
     <nav class="chips">
-      <a href="#confirmar">Confirmar</a><a href="#tora">As treze middot</a><a href="#hoje">Hoje à noite</a><a href="#corrente">A corrente</a>
+      <a href="#confirmar">Confirmar</a><a href="#hoje">Hoje à noite</a><a href="#tora">As treze middot</a><a href="#corrente">A corrente</a>
     </nav>
   </header>
 
@@ -162,6 +173,7 @@
       <div class="num" id="num">…</div>
       <div class="num-label" id="numLabel">confirmados pra esta noite</div>
       <div class="meta-linha" id="metaLinha"></div>
+      <div class="agora">hoje às <b id="horaTopo">…</b> <span>· 1º andar do Beit Yaakov · até 35 min</span></div>
       <div class="nomes" id="nomes"></div>
       <div class="nomes-legenda" id="nomesLegenda"></div>
       <button class="btn" id="btnConf" disabled>Confirmar presença (anônimo)</button>
@@ -184,7 +196,10 @@
         </div>
       </div>
 
-      <div class="anon"><b>Anônimo de verdade.</b> No anônimo ninguém vê quem apertou, nem os organizadores: o que chega aqui é só o número, pra gente saber se precisa correr atrás de mais alguém.<br><br>E a gente sabe como é. Ninguém quer prometer de tarde uma coisa que depende de como a noite vai estar. Então confirmar aqui quer dizer <b>eu topo</b>, e topar já é o que segura o minyan de pé. Se mais tarde não der, volta e aperta de novo: sai na hora, sem explicação e sem cobrança. Ninguém vai saber que era você.</div>
+      <details class="abre" id="detAnon">
+        <summary>anônimo de verdade, e dá pra desistir</summary>
+        <div class="anon">No anônimo ninguém vê quem apertou, nem os organizadores: o que chega aqui é só o número, pra gente saber se precisa correr atrás de mais alguém.<br><br>E a gente sabe como é. Ninguém quer prometer de tarde uma coisa que depende de como a noite vai estar. Então confirmar aqui quer dizer <b>eu topo</b>, e topar já é o que segura o minyan de pé. Se mais tarde não der, volta e aperta de novo: sai na hora, sem explicação e sem cobrança. Ninguém vai saber que era você.</div>
+      </details>
       <div class="status" id="stConf"></div>
       <div class="sou-eu" id="souEu">você está cadastrado como <b id="souEuNome"></b> · <button class="link-sec" id="btnApagarCad" style="display:inline;width:auto;margin:0">apagar meu cadastro</button></div>
     </div>
@@ -193,16 +208,27 @@
     </div>
   </section>
 
+  <section id="hoje" class="nasce">
+    <div class="card">
+      <div class="sec-title">Hoje à noite</div>
+      <div class="hora" id="horaInicio">00:0—</div>
+      <div class="hora-label">começamos <span id="horaDet">3 minutos antes de chatzot</span></div>
+      <div class="local">no <b>1º andar do Beit Yaakov</b> · noite em outro lugar, avisamos aqui e no grupo</div>
+      <div class="regra35">Reza de <b>no máximo 35 minutos</b>. Todo mundo sabe a hora que volta pra casa.</div>
+      <div class="fonte-rav">conforme o Rav Ovadia Yossef</div>
+    </div>
+  </section>
+
   <section id="tora" class="nasce">
     <div class="card tora">
       <div class="sec-title">As treze middot da meia-noite</div>
       <div class="heb-verso" lang="he" dir="rtl">וַיַּעֲבֹר ה׳ עַל־פָּנָיו וַיִּקְרָא</div>
       <div class="heb-trad">"e Hashem passou diante dele, e proclamou" · Shemot 34, 6</div>
-      <p>Depois do bezerro de ouro, quando o povo tinha tudo para ser deixado para trás, Moshe pediu para entender o caminho de Hashem. A resposta veio em treze medidas de misericórdia, proclamadas em voz alta diante dele. O Talmud guarda a promessa que veio junto: foi selada uma aliança com as treze middot, e elas voltam sempre com resposta (Rosh Hashaná 17b).</p>
-      <p>O coração das Selichot é esse trecho, o Vayaavor. Ele pertence ao público: com o minyan formado, o shaliach tsibur o proclama em nome de todos, em voz alta, no meio da noite. Enquanto o décimo não chega, cada um lê o versículo para si, baixinho.</p>
-      <p class="puxa">Por isso o décimo carrega mais do que a própria reza. A sua presença é o que faz as treze middot serem ditas nesta madrugada.</p>
-      <details id="detMidot">
-        <summary>as treze, uma a uma</summary>
+      <p class="puxa">O décimo carrega mais do que a própria reza: a sua presença é o que faz as treze middot serem ditas nesta madrugada.</p>
+      <details class="abre" id="detTora">
+        <summary>de onde vem isso, e as treze uma a uma</summary>
+        <p style="margin-top:13px">Depois do bezerro de ouro, quando o povo tinha tudo para ser deixado para trás, Moshe pediu para entender o caminho de Hashem. A resposta veio em treze medidas de misericórdia, proclamadas em voz alta diante dele. O Talmud guarda a promessa que veio junto: foi selada uma aliança com as treze middot, e elas voltam sempre com resposta (Rosh Hashaná 17b).</p>
+        <p>O coração das Selichot é esse trecho, o Vayaavor. Ele pertence ao público: com o minyan formado, o shaliach tsibur o proclama em nome de todos, em voz alta, no meio da noite. Enquanto o décimo não chega, cada um lê o versículo para si, baixinho.</p>
         <ul class="midot">
           <li><span class="he">ה׳</span><span class="pt">misericórdia antes de a pessoa errar</span></li>
           <li><span class="he">ה׳</span><span class="pt">a mesma misericórdia depois que ela errou</span></li>
@@ -220,17 +246,6 @@
         </ul>
       </details>
       <div class="fonte-rav" style="margin-top:10px">Shemot 34, 6-7 · leitura conforme o costume da casa</div>
-    </div>
-  </section>
-
-  <section id="hoje" class="nasce">
-    <div class="card">
-      <div class="sec-title">Hoje à noite</div>
-      <div class="hora" id="horaInicio">00:0—</div>
-      <div class="hora-label">começamos <span id="horaDet">3 minutos antes de chatzot</span></div>
-      <div class="local">no <b>1º andar do Beit Yaakov</b> · noite em outro lugar, avisamos aqui e no grupo</div>
-      <div class="regra35">Reza de <b>no máximo 32 minutos</b>. Todo mundo sabe a hora que volta pra casa.</div>
-      <div class="fonte-rav">conforme o Rav Ovadia Yossef</div>
     </div>
   </section>
 
@@ -603,9 +618,10 @@
       if (!m) throw new Error("sem chatzot");
       var chatzot = (+m[1])*60 + (+m[2]);
       $("horaInicio").textContent = hhmm(chatzot-3);
+      $("horaTopo").textContent = hhmm(chatzot-3);
       $("horaDet").textContent = "3 minutos antes de chatzot ("+hhmm(chatzot)+")";
     })
-    .catch(function(){ $("horaInicio").textContent = "±00:06"; });
+    .catch(function(){ $("horaInicio").textContent = "±00:06"; $("horaTopo").textContent = "±00:06"; });
   fetch("https://www.hebcal.com/converter?cfg=json&date="+NOITE+"&g2h=1")
     .then(function(r){ return r.json(); })
     .then(function(c){ if (c.hebrew) $("dataHeb").textContent = "Selichot desta noite: "+c.hebrew; })
@@ -616,7 +632,14 @@
   Array.prototype.forEach.call(document.querySelectorAll(".chips a"), function(a){
     a.addEventListener("click", function(){ var e = MENU_EV[a.getAttribute("href")]; if (e) ev(e); });
   });
-  $("detMidot").addEventListener("toggle", function(){ if ($("detMidot").open) ev("tora_abriu"); });
+  $("detTora").addEventListener("toggle", function(){ if ($("detTora").open) ev("tora_abriu"); });
+
+  // Quem chega pela primeira vez recebe tudo explicado, com as gavetas abertas.
+  // Quem já conhece vê a tela curta: número, horário, botão. As gavetas continuam
+  // ali pra abrir quando quiser.
+  var VISITAS = (parseInt(localStorage.getItem("mae-visitas") || "0", 10) || 0) + 1;
+  try { localStorage.setItem("mae-visitas", String(VISITAS)); } catch(e){}
+  if (VISITAS <= 1){ $("detAnon").open = true; $("detTora").open = true; }
 
   atualizar(false);
   setInterval(function(){ if (!document.hidden) atualizar(false); }, 60000);
