@@ -96,7 +96,7 @@
       <div class="sec-title">Acompanhamento do site</div>
       <div class="metricas" id="metricas">carregando…</div>
       <div class="cliques" id="cliques"></div>
-      <div class="status" style="text-align:left">Anônimo: conta aparelhos, nunca pessoas. "Leram até o fim" = rolaram 90% da página. "Apertaram" = dos aparelhos que abriram nesta noite, quantos clicaram em confirmar.</div>
+      <div class="status" style="text-align:left" id="notaMetricas">Anônimo: conta aparelhos, nunca pessoas. "Leram até o fim" = rolaram 90% da página.</div>
     </div>
 
     <div class="card">
@@ -215,6 +215,9 @@
       html += "<span class='clique'><b>"+(c[k]||0)+"</b> "+NOMES_CLIQUE[k]+" <span style='opacity:.55'>("+(t[k]||0)+" no total)</span></span>";
     });
     $("cliques").innerHTML = vazio ? "<span class='clique'>nenhum clique registrado ainda nesta noite</span>" : html;
+    $("notaMetricas").textContent = "Anônimo: conta aparelhos, nunca pessoas. \"Leram até o fim\" = rolaram 90% da página. "
+      + "\"Apertaram confirmar\" = " + (m.apertaram_base != null ? m.apertaram_base : 0)
+      + " aparelhos abriram o site desde que o medidor ligou, e essa é a fatia deles que clicou.";
   }
 
   function txt(s){ var d = document.createElement("span"); d.textContent = s == null ? "" : s; return d.innerHTML; }
