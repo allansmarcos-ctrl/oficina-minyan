@@ -431,7 +431,10 @@
       keepalive: !!saindo
     }).catch(function(){});
   }
-  rpc("minyan_visita_abre", {p_device:DEVICE}).then(function(id){ VISITA = id; medirRolagem(); }).catch(function(){});
+  // de onde veio o link: minyan-am-echad.vercel.app/?c=flyer, ?c=grupo, ?c=jf...
+  // é um código curto do organizador, jamais um nome de pessoa.
+  var ORIGEM = (function(){ var m = /[?&]c=([A-Za-z0-9_-]{1,24})/.exec(location.search); return m ? m[1] : null; })();
+  rpc("minyan_visita_abre2", {p_device:DEVICE, p_origem:ORIGEM}).then(function(id){ VISITA = id; medirRolagem(); }).catch(function(){});
   setInterval(function(){ if (!document.hidden) fecharVisita(false); }, 15000);
   document.addEventListener("visibilitychange", function(){ if (document.hidden) fecharVisita(true); });
 })();

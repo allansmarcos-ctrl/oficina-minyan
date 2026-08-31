@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatório · Minyan Am Echad</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --night:#030711; --night-deep:#0e1b38; --ivory:#f2ede2; --ivory-dim:#b9b4a6;
+    --gold:#c9a45c; --gold-bright:#e8cf94; --turquoise:#4fd1d9; --ok:#7ddf9a; --nao:#a04537;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) fixed var(--night);
+    color:var(--ivory); font:15px/1.55 "Hanken Grotesk",system-ui,sans-serif;
+    min-height:100vh; padding:26px 14px 60px; display:flex; flex-direction:column; align-items:center}
+  .kicker{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;text-align:center}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--gold-bright);font-size:28px;margin:8px 0 16px;text-align:center}
+  .card{width:min(560px,100%);background:rgba(233,207,148,.045);border:1px solid rgba(201,164,92,.35);border-radius:14px;padding:18px 16px;margin-bottom:14px}
+  .sec-title{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  input[type=password], input[type=date]{width:100%;padding:11px;border-radius:9px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
+  input:focus-visible, button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  .btn{display:block;width:100%;margin-top:12px;padding:12px;border:none;border-radius:10px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#211703;font:600 15px "Hanken Grotesk",sans-serif;cursor:pointer}
+  .btn.sec{background:none;border:1px solid rgba(201,164,92,.5);color:var(--ivory-dim);font-weight:500}
+  .status{font-size:12px;color:var(--ivory-dim);margin-top:8px;min-height:15px;text-align:center}
+  .escondido{display:none}
+  a.voltar{color:var(--gold-bright);font-size:12.5px;text-decoration:none;letter-spacing:.06em}
+  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:9px}
+  .met{background:rgba(3,7,17,.5);border:1px solid rgba(201,164,92,.25);border-radius:9px;padding:9px 7px;text-align:center}
+  .met b{display:block;font-family:"Fraunces",Georgia,serif;font-size:23px;color:var(--gold-bright);font-weight:500;line-height:1.1}
+  .met span{font-size:10.5px;color:var(--ivory-dim);letter-spacing:.03em}
+  .met.verde b{color:var(--ok)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+  th{font-weight:600;color:var(--gold);text-align:right;padding:6px 4px;border-bottom:1px solid rgba(201,164,92,.3);font-size:11px;letter-spacing:.04em}
+  th:first-child{text-align:left}
+  td{padding:6px 4px;border-bottom:1px solid rgba(201,164,92,.12);text-align:right;color:var(--ivory-dim)}
+  td:first-child{text-align:left;color:var(--ivory)}
+  td b{color:var(--gold-bright);font-weight:600}
+  tr.quebrou td:first-child{color:var(--nao)}
+  tr.semmarca td{opacity:.55}
+  .rolar{overflow-x:auto}
+  .barra{position:relative;background:rgba(242,237,226,.07);border-radius:4px;height:16px;min-width:34px}
+  .barra i{position:absolute;left:0;top:0;bottom:0;background:rgba(79,209,217,.5);border-radius:4px}
+  .barra u{position:absolute;left:0;top:0;bottom:0;background:var(--ok);border-radius:4px;opacity:.9}
+  .legenda{font-size:11px;color:var(--ivory-dim);margin-top:10px;letter-spacing:.03em;line-height:1.7}
+  .legenda i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px;font-style:normal}
+  .lg-vis{background:rgba(79,209,217,.5)} .lg-conf{background:var(--ok)}
+  .nota{font-size:11.5px;color:var(--ivory-dim);margin-top:10px;line-height:1.6}
+  .destaque{font-family:"Fraunces",Georgia,serif;font-size:15px;color:var(--gold-bright);line-height:1.5;margin:2px 0 12px}
+</style>
+</head>
+<body>
+  <div class="kicker">Relatório do minyan</div>
+  <h1>O que os números contam</h1>
+
+  <div class="card" id="cardSenha">
+    <div class="sec-title">Entrar</div>
+    <input type="password" id="inSenha" placeholder="senha do gabai" autocomplete="current-password">
+    <button class="btn" id="btnEntrar">Entrar</button>
+    <div class="status" id="stSenha"></div>
+  </div>
+
+  <div id="painel" class="escondido" style="width:min(560px,100%)">
+
+    <div class="card">
+      <div class="sec-title">A temporada inteira</div>
+      <div class="destaque" id="frasona">carregando…</div>
+      <div class="grade" id="totais"></div>
+      <div class="nota">"Aparelho" é um celular ou computador, contado sem nome nenhum. A mesma pessoa em dois aparelhos conta duas vezes, e um aparelho emprestado conta uma vez só.</div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Noite a noite</div>
+      <div class="rolar"><table id="tabNoites"><tbody></tbody></table></div>
+      <div class="legenda">"vieram" é o que o gabai anotou depois da reza, e é o número de verdade. "confirmaram" é quem apertou o botão no site antes.</div>
+      <button class="btn sec" id="btnCsvNoites">Baixar noite a noite (CSV)</button>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Quem volta</div>
+      <div class="rolar"><table id="tabRec"><tbody></tbody></table></div>
+      <div class="legenda">Quantos aparelhos apareceram em quantas noites diferentes. É o retrato mais honesto da fidelidade que o site consegue enxergar.</div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Uma noite por dentro</div>
+      <input type="date" id="inNoite">
+      <div class="nota" style="margin-top:6px">A data é a da <b>madrugada</b>: a noite de sábado 29/08 é a madrugada de 30/08.</div>
+      <div class="grade" id="resumoNoite" style="margin-top:14px"></div>
+      <div class="nota" id="janelaConf" style="text-align:center"></div>
+      <div class="sec-title" style="margin-top:18px">Hora a hora</div>
+      <div class="rolar"><table id="tabCurva"><tbody></tbody></table></div>
+      <div class="legenda"><span><i class="lg-vis"></i>visitas</span> &nbsp; <span><i class="lg-conf"></i>confirmaram nesta hora</span></div>
+      <div class="sec-title" style="margin-top:18px">De onde vieram</div>
+      <div class="rolar"><table id="tabOrigem"><tbody></tbody></table></div>
+      <div class="nota">A marca vem do fim do link (<b>?c=flyer</b>, <b>?c=grupo</b>). Quem entra pelo endereço puro cai em "(sem marca)".</div>
+      <button class="btn sec" id="btnCsvCurva">Baixar esta noite hora a hora (CSV)</button>
+    </div>
+
+    <div style="text-align:center;margin-top:6px"><a class="voltar" href="../">← voltar pra bancada</a></div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var SB_URL = "https://yuxpaionwjufeosasppx.supabase.co";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1eHBhaW9ud2p1ZmVvc2FzcHB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzU1ODYsImV4cCI6MjA5Nzc1MTU4Nn0.1SXvSrQxfimObWXnXexdQLlHUWfnwBHmXPKsQhANwAY";
+  var $ = function(id){ return document.getElementById(id); };
+  var SENHA = localStorage.getItem("mae-gabai") || "";
+  var DIAS = ["dom","seg","ter","qua","qui","sex","sáb"];
+  var TEMP = null, NOITE_SEL = null;
+
+  function rpc(nome, corpo){
+    return fetch(SB_URL+"/rest/v1/rpc/"+nome, {
+      method:"POST",
+      headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+      body: JSON.stringify(corpo)
+    }).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.message || nome); return j; }); });
+  }
+  function noiteAlvo(){
+    var p = {};
+    new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hour12:false})
+      .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    var d = new Date(Date.UTC(+p.year, +p.month-1, +p.day));
+    if (+p.hour >= 1) d.setUTCDate(d.getUTCDate()+1);
+    return d.toISOString().slice(0,10);
+  }
+  // rotulo da NOITE a partir da madrugada (a chevre fala "noite de sábado 29")
+  function rotulo(iso){
+    var m = new Date(iso+"T00:00:00Z"), n = new Date(m); n.setUTCDate(n.getUTCDate()-1);
+    return DIAS[n.getUTCDay()]+" "+n.getUTCDate()+"/"+(n.getUTCMonth()+1);
+  }
+  function txt(s){ var d = document.createElement("span"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function num(n){ return n == null ? "·" : n; }
+
+  function pintarTemporada(t){
+    TEMP = t;
+    var to = t.totais;
+    $("totais").innerHTML =
+        "<div class='met'><b>"+to.aparelhos+"</b><span>aparelhos ao todo</span></div>"
+      + "<div class='met'><b>"+to.visitas+"</b><span>visitas</span></div>"
+      + "<div class='met'><b>"+to.aparelhos_1_noite_so+"</b><span>vieram 1 noite só</span></div>"
+      + "<div class='met verde'><b>"+to.aparelhos_3_ou_mais+"</b><span>voltaram 3+ noites</span></div>"
+      + "<div class='met'><b>"+to.confirmacoes+"</b><span>confirmações</span></div>"
+      + "<div class='met'><b>"+to.cadastrados+"</b><span>cadastrados</span></div>";
+    var pct = to.aparelhos ? Math.round(100*to.aparelhos_1_noite_so/to.aparelhos) : 0;
+    $("frasona").textContent = to.aparelhos+" aparelhos abriram o site desde "+to.desde.split("-").reverse().join("/")
+      +". "+pct+"% deles apareceram uma noite e sumiram; "+to.aparelhos_3_ou_mais+" voltaram três noites ou mais.";
+
+    var html = "<tr><th>noite</th><th>visitas</th><th>aparelhos</th><th>novos</th><th>confirmaram</th><th>vieram</th></tr>";
+    (t.noites||[]).slice().reverse().forEach(function(n){
+      var cls = n.fechou === false ? "quebrou" : (n.fechou == null ? "semmarca" : "");
+      html += "<tr class='"+cls+"'><td>"+rotulo(n.noite)+(n.fechou===false?" ✕":"")+"</td>"
+        + "<td>"+n.visitas+"</td><td>"+n.aparelhos+"</td><td>"+n.novos+"</td>"
+        + "<td>"+n.confirmados+"</td><td><b>"+num(n.vieram)+"</b></td></tr>";
+    });
+    $("tabNoites").innerHTML = html;
+
+    var hr = "<tr><th>apareceu em</th><th>aparelhos</th><th></th></tr>";
+    var maxr = 0; (t.recorrencia||[]).forEach(function(r){ if (r.aparelhos > maxr) maxr = r.aparelhos; });
+    (t.recorrencia||[]).forEach(function(r){
+      hr += "<tr><td>"+r.noites+(r.noites===1?" noite":" noites")+"</td><td>"+r.aparelhos+"</td>"
+        + "<td style='width:52%'><div class='barra'><i style='width:"+(maxr?Math.round(100*r.aparelhos/maxr):0)+"%'></i></div></td></tr>";
+    });
+    $("tabRec").innerHTML = hr;
+  }
+
+  function pintarNoite(r){
+    var s = r.resumo;
+    $("resumoNoite").innerHTML =
+        "<div class='met'><b>"+s.aparelhos+"</b><span>aparelhos</span></div>"
+      + "<div class='met'><b>"+r.aparelhos_novos+"</b><span>primeira vez</span></div>"
+      + "<div class='met'><b>"+s.confirmados+"</b><span>confirmaram</span></div>"
+      + "<div class='met'><b>"+s.desistiram+"</b><span>desistiram</span></div>"
+      + "<div class='met verde'><b>"+num(s.vieram)+"</b><span>vieram de fato</span></div>"
+      + "<div class='met'><b>"+(s.tempo_medio_s>=60?Math.floor(s.tempo_medio_s/60)+"min":s.tempo_medio_s+"s")+"</b><span>tempo na página</span></div>";
+    $("janelaConf").textContent = s.primeira_confirmacao
+      ? "primeira confirmação às "+s.primeira_confirmacao.slice(0,5)+", última às "+s.ultima_confirmacao.slice(0,5)
+        +(s.com_nome ? " · "+s.com_nome+" com nome, "+s.anonimos+" anônimos" : "")
+      : "ninguém confirmou nesta noite";
+
+    var curva = r.curva || [], maxv = 0, somaConf = 0;
+    curva.forEach(function(c){ if (c.visitas > maxv) maxv = c.visitas; somaConf += c.confirmou; });
+    // o log de confirmação nasceu em 31/08. Nas noites anteriores a coluna vem
+    // das confirmações que ficaram vivas, que é o que dá pra saber delas.
+    if (!somaConf && (r.confirmacoes_por_hora||[]).length){
+      var porHora = {};
+      r.confirmacoes_por_hora.forEach(function(x){ porHora[x.hora] = x.n; });
+      curva.forEach(function(c){ c.confirmou = porHora[c.hora] || 0; });
+      (r.confirmacoes_por_hora||[]).forEach(function(x){
+        if (!curva.some(function(c){ return c.hora === x.hora; }))
+          curva.push({hora:x.hora, visitas:0, aparelhos:0, confirmou:x.n, desistiu:0});
+      });
+      curva.sort(function(a,b){ return a.hora - b.hora; });
+    }
+    var html = "<tr><th>hora</th><th>visitas</th><th>conf.</th><th></th></tr>";
+    if (!curva.length) html += "<tr><td colspan='4' style='text-align:center;padding:14px'>nenhum movimento nesta noite</td></tr>";
+    curva.forEach(function(c){
+      var lv = maxv ? Math.round(100*c.visitas/maxv) : 0;
+      var lc = maxv ? Math.round(100*c.confirmou/maxv) : 0;
+      html += "<tr><td>"+(c.hora<10?"0":"")+c.hora+"h</td><td>"+c.visitas+"</td>"
+        + "<td>"+(c.confirmou||"")+(c.desistiu?" <span style='color:var(--nao)'>-"+c.desistiu+"</span>":"")+"</td>"
+        + "<td style='width:46%'><div class='barra'><i style='width:"+lv+"%'></i><u style='width:"+lc+"%'></u></div></td></tr>";
+    });
+    $("tabCurva").innerHTML = html;
+
+    var ho = "<tr><th>marca do link</th><th>aparelhos</th></tr>";
+    (r.origens||[]).forEach(function(o){ ho += "<tr><td>"+txt(o.origem)+"</td><td>"+o.aparelhos+"</td></tr>"; });
+    $("tabOrigem").innerHTML = ho;
+  }
+
+  function baixar(nome, linhas){
+    var csv = linhas.map(function(l){ return l.map(function(c){
+      c = c == null ? "" : String(c);
+      return /[";\n]/.test(c) ? '"'+c.replace(/"/g,'""')+'"' : c;
+    }).join(";"); }).join("\r\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["﻿"+csv], {type:"text/csv;charset=utf-8"}));
+    a.download = nome; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  function carregarNoite(iso){
+    NOITE_SEL = iso;
+    return rpc("minyan_rel_noite", {p_senha:SENHA, p_noite:iso}).then(pintarNoite)
+      .catch(function(e){ $("resumoNoite").innerHTML = "<div class='status'>não carregou: "+txt(e.message)+"</div>"; });
+  }
+  function carregar(){
+    return rpc("minyan_rel_temporada", {p_senha:SENHA}).then(function(t){
+      pintarTemporada(t);
+      if (!NOITE_SEL){ NOITE_SEL = noiteAlvo(); $("inNoite").value = NOITE_SEL; }
+      return carregarNoite(NOITE_SEL);
+    });
+  }
+
+  function entrar(){
+    var s = $("inSenha").value.trim() || SENHA;
+    if (!s){ $("stSenha").textContent = "escreve a senha"; return; }
+    $("btnEntrar").disabled = true; $("stSenha").textContent = "conferindo…";
+    SENHA = s;
+    carregar().then(function(){
+      localStorage.setItem("mae-gabai", s);
+      $("cardSenha").classList.add("escondido"); $("painel").classList.remove("escondido");
+    }).catch(function(e){
+      $("stSenha").textContent = /senha errada/.test(e.message) ? "senha errada" : "não deu, confere a internet";
+    }).then(function(){ $("btnEntrar").disabled = false; });
+  }
+  $("btnEntrar").addEventListener("click", entrar);
+  $("inSenha").addEventListener("keydown", function(e){ if (e.key === "Enter") entrar(); });
+  $("inNoite").addEventListener("change", function(){ if (this.value) carregarNoite(this.value); });
+
+  $("btnCsvNoites").addEventListener("click", function(){
+    if (!TEMP) return;
+    var l = [["noite (madrugada)","dia da semana","visitas","aparelhos","primeira vez","confirmaram","desistiram","vieram","teve minyan"]];
+    TEMP.noites.forEach(function(n){
+      l.push([n.noite, rotulo(n.noite), n.visitas, n.aparelhos, n.novos, n.confirmados, n.desistiram, n.vieram, n.fechou === true ? "sim" : (n.fechou === false ? "não" : "")]);
+    });
+    baixar("minyan-noite-a-noite.csv", l);
+  });
+  $("btnCsvCurva").addEventListener("click", function(){
+    rpc("minyan_rel_noite", {p_senha:SENHA, p_noite:NOITE_SEL}).then(function(r){
+      var l = [["hora","visitas","aparelhos","confirmaram","desistiram"]];
+      (r.curva||[]).forEach(function(c){ l.push([c.hora+"h", c.visitas, c.aparelhos, c.confirmou, c.desistiu]); });
+      baixar("minyan-"+NOITE_SEL+"-hora-a-hora.csv", l);
+    });
+  });
+
+  if (SENHA){ $("inSenha").value = SENHA; entrar(); }
+})();
+</script>
+</body>
+</html>
