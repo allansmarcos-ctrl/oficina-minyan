@@ -63,6 +63,10 @@
   .btn.off{background:rgba(3,7,17,.55);border:1px solid rgba(125,223,154,.55);color:var(--ok);font-weight:600}
   .btn[disabled]{opacity:.5;cursor:default}
   .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .nomes{display:none;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:14px}
+  .pastilha{font-size:13px;color:var(--gold-bright);border:1px solid rgba(201,164,92,.5);background:rgba(3,7,17,.5);border-radius:99px;padding:5px 12px;animation:acender .5s ease backwards}
+  .pastilha.anon{color:var(--ivory-dim);border-color:rgba(185,180,166,.3);border-style:dashed}
+  .nomes-legenda{display:none;font-size:11.5px;color:var(--ivory-dim);margin-top:9px;letter-spacing:.04em}
   .anon{font-size:12.5px;color:var(--ivory-dim);margin-top:14px;text-align:left;line-height:1.6}
   .anon b{color:var(--turquoise)}
   .status{font-size:12px;color:var(--ivory-dim);margin-top:8px;min-height:15px;letter-spacing:.04em}
@@ -75,6 +79,22 @@
   .regra35{margin-top:14px;font-size:14.5px;color:var(--ivory);border-top:1px solid rgba(201,164,92,.25);padding-top:13px}
   .regra35 b{color:var(--gold-bright)}
   .fonte-rav{font-size:11.5px;color:var(--ivory-dim);margin-top:6px;letter-spacing:.08em}
+  .tora{text-align:left}
+  .tora .sec-title{text-align:center}
+  .heb-verso{font-size:23px;line-height:1.9;color:var(--gold-bright);text-align:center;direction:rtl;margin:2px 0 4px;font-family:"Times New Roman",serif}
+  .heb-trad{text-align:center;font-size:12.5px;color:var(--ivory-dim);letter-spacing:.04em;margin-bottom:14px}
+  .tora p{margin:0 0 12px;font-size:14.5px;line-height:1.72}
+  .tora p.puxa{font-family:"Fraunces",Georgia,serif;font-size:17px;line-height:1.6;color:var(--gold-bright);margin-bottom:6px}
+  .tora details{margin-top:6px;border-top:1px solid rgba(201,164,92,.25);padding-top:12px}
+  .tora summary{cursor:pointer;font-size:13px;color:var(--gold);letter-spacing:.06em;list-style:none}
+  .tora summary::-webkit-details-marker{display:none}
+  .tora summary::after{content:" ▾"}
+  .tora details[open] summary::after{content:" ▴"}
+  .midot{margin:12px 0 0;padding:0;list-style:none;counter-reset:m}
+  .midot li{display:flex;align-items:baseline;gap:10px;padding:5px 0;font-size:13.5px;border-top:1px solid rgba(201,164,92,.12)}
+  .midot li:first-child{border-top:none}
+  .midot .he{direction:rtl;color:var(--gold-bright);font-family:"Times New Roman",serif;font-size:17px;min-width:118px;text-align:right;flex:none}
+  .midot .pt{color:var(--ivory-dim)}
   .mes-label{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:14px 0 8px;font-weight:400}
   .mes-label:first-of-type{margin-top:2px}
   .dias-cab{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:10.5px;color:var(--ivory-dim);letter-spacing:.1em;margin-bottom:6px}
@@ -112,7 +132,7 @@
     <p class="sub">Todo mundo junto na meia-noite. Todas as noites até Yom Kipur, b'ezrat Hashem.</p>
     <div class="fio"></div>
     <nav class="chips">
-      <a href="#confirmar">Confirmar</a><a href="#hoje">Hoje à noite</a><a href="#corrente">A corrente</a>
+      <a href="#confirmar">Confirmar</a><a href="#tora">As treze middot</a><a href="#hoje">Hoje à noite</a><a href="#corrente">A corrente</a>
     </nav>
   </header>
 
@@ -121,12 +141,44 @@
       <div class="num" id="num">…</div>
       <div class="num-label">confirmados pra esta noite</div>
       <div class="meta-linha" id="metaLinha"></div>
+      <div class="nomes" id="nomes"></div>
+      <div class="nomes-legenda" id="nomesLegenda"></div>
       <button class="btn" id="btnConf" disabled>Confirmar presença (anônimo)</button>
       <div class="anon"><b>Anônimo de verdade.</b> Ninguém vê quem confirmou: o número só serve pros organizadores saberem se precisa correr atrás de mais gente. Tem chance de vir? <b>Já confirma</b>, que é isso que dá força pro minyan. Se não der, volta aqui e aperta de novo. Ninguém fica sabendo.</div>
       <div class="status" id="stConf"></div>
     </div>
     <div class="card aviso" id="cardAviso">
       <span class="tag">Aviso de hoje</span><span id="avisoTexto"></span>
+    </div>
+  </section>
+
+  <section id="tora" class="nasce">
+    <div class="card tora">
+      <div class="sec-title">As treze middot da meia-noite</div>
+      <div class="heb-verso" lang="he" dir="rtl">וַיַּעֲבֹר ה׳ עַל־פָּנָיו וַיִּקְרָא</div>
+      <div class="heb-trad">"e Hashem passou diante dele, e proclamou" · Shemot 34, 6</div>
+      <p>Depois do bezerro de ouro, quando o povo já merecia ser deixado para trás, Moshe pediu para entender o caminho de Hashem. A resposta veio em treze medidas de misericórdia, proclamadas em voz alta diante dele. O Talmud guarda a promessa que veio junto: sempre que Israel as disser na ordem, elas fazem o seu trabalho (Rosh Hashaná 17b).</p>
+      <p>O coração das Selichot é esse trecho, o Vayaavor. Ele pertence ao público: com os dez formados, o shaliach tsibur o proclama em nome de todos, em voz alta, no meio da noite. Enquanto o décimo não chega, cada um lê o versículo para si, baixinho.</p>
+      <p class="puxa">Por isso o décimo carrega mais do que a própria reza. A sua presença é o que faz as treze middot serem ditas nesta madrugada.</p>
+      <details id="detMidot">
+        <summary>as treze, uma a uma</summary>
+        <ul class="midot">
+          <li><span class="he">ה׳</span><span class="pt">misericórdia antes de a pessoa errar</span></li>
+          <li><span class="he">ה׳</span><span class="pt">a mesma misericórdia depois que ela errou</span></li>
+          <li><span class="he">אֵל</span><span class="pt">o poder que sustenta o mundo mesmo assim</span></li>
+          <li><span class="he">רַחוּם</span><span class="pt">compassivo com quem está por baixo</span></li>
+          <li><span class="he">וְחַנּוּן</span><span class="pt">generoso com quem não tem o que apresentar</span></li>
+          <li><span class="he">אֶרֶךְ אַפַּיִם</span><span class="pt">paciente, dá tempo de voltar</span></li>
+          <li><span class="he">וְרַב חֶסֶד</span><span class="pt">transborda bondade além da conta</span></li>
+          <li><span class="he">וֶאֱמֶת</span><span class="pt">verdadeiro, cumpre o que promete</span></li>
+          <li><span class="he">נֹצֵר חֶסֶד לָאֲלָפִים</span><span class="pt">guarda a bondade por milhares de gerações</span></li>
+          <li><span class="he">נֹשֵׂא עָוֹן</span><span class="pt">carrega o peso do erro pensado</span></li>
+          <li><span class="he">וָפֶשַׁע</span><span class="pt">e o da rebeldia feita de propósito</span></li>
+          <li><span class="he">וְחַטָּאָה</span><span class="pt">e o do erro sem intenção</span></li>
+          <li><span class="he">וְנַקֵּה</span><span class="pt">e limpa quem volta</span></li>
+        </ul>
+      </details>
+      <div class="fonte-rav" style="margin-top:10px">Shemot 34, 6-7 · leitura conforme o costume da casa</div>
     </div>
   </section>
 
@@ -209,6 +261,19 @@
     }).then(function(r){ if(!r.ok) throw new Error(nome+" "+r.status); return r.json(); });
   }
 
+  // medidor: registra O CLIQUE, por aparelho, nunca por pessoa.
+  // A lista de eventos aceitos é fechada no banco; qualquer outro nome é ignorado lá.
+  function ev(nome, detalhe){
+    try{
+      fetch(SB_URL+"/rest/v1/rpc/minyan_ev", {
+        method:"POST",
+        headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+        body: JSON.stringify({p_device:DEVICE, p_evento:nome, p_detalhe:detalhe || null}),
+        keepalive:true
+      }).catch(function(){});
+    }catch(e){}
+  }
+
   function dataISO(ano, mes, dia){ return ano+"-"+(mes<10?"0":"")+mes+"-"+(dia<10?"0":"")+dia; }
   var DIAS_SEM = ["dom","seg","ter","qua","qui","sex","sáb"];
 
@@ -243,19 +308,44 @@
     $("calendario").innerHTML = html;
   }
 
+  // as pastilhas de quem escolheu aparecer. Nome sempre por textContent:
+  // o navegador trata como texto puro, e nome nenhum vira código na página.
+  function pintarNomes(p){
+    var box = $("nomes"), leg = $("nomesLegenda"), nomes = p.nominais || [];
+    box.innerHTML = "";
+    if (!nomes.length){ box.style.display = "none"; leg.style.display = "none"; return; }
+    nomes.forEach(function(nome, i){
+      var s = document.createElement("span");
+      s.className = "pastilha"; s.style.animationDelay = (i*0.04)+"s";
+      s.textContent = nome;
+      box.appendChild(s);
+    });
+    if (p.anonimos > 0){
+      var a = document.createElement("span");
+      a.className = "pastilha anon";
+      a.textContent = "+ "+p.anonimos+(p.anonimos === 1 ? " anônimo" : " anônimos");
+      box.appendChild(a);
+    }
+    box.style.display = "flex";
+    leg.textContent = "quem escolheu aparecer · o anônimo continua sendo o padrão";
+    leg.style.display = "block";
+  }
+
   function pintar(p, anima){
     carregou = true;
+    var total = p.total;
     var n = $("num");
-    n.textContent = p.confirmados;
+    n.textContent = total;
     if (anima){ n.classList.remove("sobe"); void n.offsetWidth; n.classList.add("sobe"); }
     var m = $("metaLinha");
-    if (p.confirmados >= META){
+    if (total >= META){
       m.className = "meta-linha forte";
-      m.innerHTML = "temos "+p.confirmados+", b\"H. <b>traga o "+(p.confirmados+1)+"º: hoje a corrente cresce</b>";
+      m.innerHTML = "temos "+total+", b\"H. <b>traga o "+(total+1)+"º: hoje a corrente cresce</b>";
     } else {
       m.className = "meta-linha";
-      m.innerHTML = "precisamos de "+META+" · "+(p.confirmados === 0 ? "<b>seja o primeiro a confirmar</b>" : "faltam <b>"+(META-p.confirmados)+"</b>");
+      m.innerHTML = "precisamos de "+META+" · "+(total === 0 ? "<b>seja o primeiro a confirmar</b>" : "faltam <b>"+(META-total)+"</b>");
     }
+    pintarNomes(p);
     var b = $("btnConf");
     b.disabled = false;
     if (confirmado()){ b.className = "btn off"; b.textContent = "✓ Confirmado pra esta noite. Apertar de novo desiste"; }
@@ -271,7 +361,7 @@
   }
 
   function atualizar(anima){
-    return rpc("minyan_painel", {p_noite:NOITE}).then(function(p){
+    return rpc("minyan_painel2", {p_noite:NOITE}).then(function(p){
         var primeira = !carregou;
         pintar(p, anima);
         if (primeira) $("stConf").textContent = "";
@@ -286,6 +376,7 @@
     ocupado = true;
     var b = this; b.disabled = true;
     var desistindo = confirmado();
+    ev(desistindo ? "desistir" : "confirmar");
     rpc(desistindo ? "minyan_desistir" : "minyan_confirmar", {p_noite:NOITE, p_device:DEVICE})
       .then(function(){
         localStorage.setItem("mae-conf-"+NOITE, desistindo ? "0" : "1");
@@ -311,6 +402,13 @@
     .then(function(r){ return r.json(); })
     .then(function(c){ if (c.hebrew) $("dataHeb").textContent = "Selichot desta noite: "+c.hebrew; })
     .catch(function(){});
+
+  // cliques do menu e da Torá do décimo
+  var MENU_EV = {"#confirmar":"menu_confirmar", "#tora":"menu_tora", "#hoje":"menu_hoje", "#corrente":"menu_corrente"};
+  Array.prototype.forEach.call(document.querySelectorAll(".chips a"), function(a){
+    a.addEventListener("click", function(){ var e = MENU_EV[a.getAttribute("href")]; if (e) ev(e); });
+  });
+  $("detMidot").addEventListener("toggle", function(){ if ($("detMidot").open) ev("tora_abriu"); });
 
   atualizar(false);
   setInterval(function(){ if (!document.hidden) atualizar(false); }, 60000);
