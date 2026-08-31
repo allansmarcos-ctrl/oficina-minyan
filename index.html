@@ -160,7 +160,7 @@
   <section id="confirmar" class="nasce">
     <div class="card">
       <div class="num" id="num">…</div>
-      <div class="num-label">confirmados pra esta noite</div>
+      <div class="num-label" id="numLabel">confirmados pra esta noite</div>
       <div class="meta-linha" id="metaLinha"></div>
       <div class="nomes" id="nomes"></div>
       <div class="nomes-legenda" id="nomesLegenda"></div>
@@ -423,6 +423,7 @@
     var total = p.total;
     var n = $("num");
     n.textContent = total;
+    $("numLabel").textContent = total === 1 ? "confirmado pra esta noite" : "confirmados pra esta noite";
     if (anima){ n.classList.remove("sobe"); void n.offsetWidth; n.classList.add("sobe"); }
     var m = $("metaLinha");
     if (total >= META){
