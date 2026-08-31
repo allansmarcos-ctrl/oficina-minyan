@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gabai — Minyan Am Echad</title>
+<title>Gabai · Minyan Am Echad</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗝️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,7 +88,7 @@
         <button class="btn" id="btnSoNumero">Só soma no número</button>
         <button class="btn sec" id="btnAparece">Aparece na lista</button>
       </div>
-      <div class="status" style="text-align:left">O nome só vai pro site quando você aperta "aparece na lista". Use nos que deixaram; na dúvida, "só soma no número", que ninguém é exposto sem querer.</div>
+      <div class="status" style="text-align:left"><b style="color:var(--nao)">Lance aqui só quem confirmou POR FORA</b> (zap, ligação, na mão). Quem já apertou o botão no site vira contagem em dobro se você lançar de novo, e a noite parece ter um a mais do que tem.<br><br>O nome só vai pro site quando você aperta "aparece na lista". Use nos que deixaram; na dúvida, "só soma no número", que ninguém é exposto sem querer.</div>
       <div id="listaNomes"></div>
     </div>
 
@@ -254,7 +254,7 @@
         $("cardSenha").classList.add("escondido"); $("painel").classList.remove("escondido");
         atualizar();
       } else { $("stSenha").textContent = "senha errada"; }
-    }).catch(function(){ $("stSenha").textContent = "não deu — confere a internet"; })
+    }).catch(function(){ $("stSenha").textContent = "não deu, confere a internet"; })
       .then(function(){ $("btnEntrar").disabled = false; });
   }
   $("btnEntrar").addEventListener("click", entrar);
