@@ -56,6 +56,44 @@
   .voltar:hover{color:var(--gold-bright)}
   .passo{position:relative;height:20px;margin-bottom:6px;font-size:11.5px;color:var(--ivory-dim);letter-spacing:.06em}
   .sair{display:block;width:100%;margin-top:14px;background:none;border:none;color:var(--ivory-dim);font:12.5px "Hanken Grotesk",sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+  /* ====== A CENA DO DECIMO ====== */
+  .cena{position:relative;width:100%;aspect-ratio:1;max-width:330px;margin:2px auto 10px;touch-action:manipulation}
+  .cena svg{width:100%;height:100%;overflow:visible}
+  .luz{cursor:default;transition:opacity .5s ease}
+  .luz .halo{opacity:0;transition:opacity .6s ease,r .6s ease}
+  .luz .nucleo{transition:fill .5s ease,r .4s ease}
+  .luz.acesa .halo{opacity:.55}
+  .luz.acesa .nucleo{fill:var(--gold-bright)}
+  .luz.apagada .nucleo{fill:rgba(242,237,226,.14)}
+  .luz.chama{cursor:pointer}
+  .luz.chama .nucleo{animation:respira 2.2s ease-in-out infinite}
+  .luz.chama .anel{opacity:.9;animation:chamando 2.2s ease-out infinite}
+  .luz.entrou .nucleo{animation:acendeu .9s ease}
+  @keyframes respira{0%,100%{opacity:.35}50%{opacity:.95}}
+  @keyframes chamando{0%{r:13;opacity:.85}100%{r:30;opacity:0}}
+  @keyframes acendeu{0%{r:7}45%{r:17}100%{r:9}}
+  .onda{opacity:0}
+  .onda.vai{animation:onda 1.5s ease-out}
+  @keyframes onda{0%{r:10;opacity:.75}100%{r:160;opacity:0}}
+  .midaCentro{font-family:"Times New Roman",serif;font-size:27px;fill:var(--gold-bright);text-anchor:middle;opacity:0;direction:rtl}
+  .midaCentro.vai{animation:mida .62s ease}
+  @keyframes mida{0%{opacity:0;transform:translateY(9px)}25%{opacity:1;transform:none}75%{opacity:1}100%{opacity:0;transform:translateY(-9px)}}
+  .cenaTxt{font-size:14.5px;color:var(--ivory-dim);min-height:44px;margin:2px 0 4px;transition:color .4s ease}
+  .cenaTxt b{color:var(--gold-bright)}
+  .cenaTxt.feito b{color:var(--ok)}
+  .toque{font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;animation:respira 2.2s ease-in-out infinite}
+  @media (prefers-reduced-motion: reduce){
+    .luz.chama .nucleo,.luz.chama .anel,.toque{animation:none}
+    .luz.chama .anel{opacity:.5}
+  }
+  .foto{position:relative;width:100%;border-radius:13px;overflow:hidden;margin:4px 0 12px;border:1px solid rgba(201,164,92,.3)}
+  .foto img{display:block;width:100%;height:auto;filter:saturate(.85) brightness(.78) contrast(1.05)}
+  .foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,7,17,.15) 0%,rgba(3,7,17,.75) 100%)}
+  .foto .legenda{position:absolute;left:12px;right:12px;bottom:10px;z-index:2;font-size:12.5px;color:var(--ivory);text-align:left;line-height:1.45;text-shadow:0 1px 6px rgba(0,0,0,.9)}
+  .tira{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:20px}
+  .tira img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px;border:1px solid rgba(201,164,92,.25);filter:saturate(.85) brightness(.72);transition:filter .3s ease,transform .3s ease}
+  .tira img:hover{filter:saturate(1) brightness(.95);transform:scale(1.03)}
   .caixa{border:1px solid rgba(201,164,92,.35);background:rgba(233,207,148,.05);border-radius:14px;padding:18px 16px;margin:16px 0;text-align:left}
   .caixa b{color:var(--gold-bright)}
   .conta{text-align:center;padding:18px 14px}
@@ -124,6 +162,10 @@
     <div class="passo"><button class="voltar" data-volta="1">← voltar</button><span>2 de 9</span></div>
     <div class="kicker">Primeiro, o que é isto</div>
     <h2>Selichot de meia-noite, em São Paulo inteira, tem num lugar só.</h2>
+    <div class="foto">
+      <img src="fotos/entrada.jpg" alt="a sala do Beit Yaakov antes da reza, com os sidurim empilhados" loading="lazy" width="900" height="600">
+      <div class="legenda">A sala do Beit Yaakov antes da meia-noite. Os sidurim já empilhados, o relógio na parede, e o lugar esperando dez.</div>
+    </div>
     <p>A hora das Selichot é a madrugada. A cidade toda diz de manhã porque é mais fácil, e ninguém está errado nisso.</p>
     <p>Aqui a gente diz na hora certa. Só que a hora certa é meia-noite, e meia-noite não enche sozinha.</p>
     <button class="btn" data-vai="3">Continuar</button>
@@ -150,12 +192,25 @@
   <section class="tela" data-n="4">
     <div class="passo"><button class="voltar" data-volta="3">← voltar</button><span>4 de 9</span></div>
     <div class="kicker">Por que dez</div>
-    <div class="heb" lang="he" dir="rtl">וַיַּעֲבֹר ה׳ עַל־פָּנָיו וַיִּקְרָא</div>
-    <div class="fonte">"e Hashem passou diante dele, e proclamou" · Shemot 34, 6</div>
-    <p>Depois do bezerro de ouro, com o povo já perdido, Moshe pediu para entender o caminho de Hashem. A resposta veio em treze medidas de misericórdia, ditas em voz alta.</p>
-    <p>Esse trecho é o coração das Selichot, e ele pertence ao público. Com dez, o shaliach tsibur proclama as treze em nome de todo mundo. Sem os dez, cada um lê baixinho, sozinho.</p>
-    <div class="caixa"><b>Você entrando, elas são ditas.</b> É essa a mitsvá que se completa no décimo, e ela não tem como acontecer sem alguém decidir sair de casa.</div>
-    <button class="btn" data-vai="5">Continuar</button>
+    <div class="cena" id="cena">
+      <svg viewBox="0 0 300 300" aria-label="as dez luzes do minyan">
+        <circle class="onda" id="onda" cx="150" cy="150" r="10" fill="none" stroke="#e8cf94" stroke-width="1.5"></circle>
+        <g id="luzes"></g>
+        <text class="midaCentro" id="midaCentro" x="150" y="158"></text>
+      </svg>
+    </div>
+    <div class="cenaTxt" id="cenaTxt">carregando a noite de hoje…</div>
+    <div class="toque" id="toque" style="visibility:hidden">toque na luz que falta</div>
+    <div id="cenaDepois" style="display:none">
+      <div class="foto">
+        <img src="fotos/cheia.jpg" alt="o primeiro andar do Beit Yaakov cheio, numa noite de Selichot" loading="lazy" width="900" height="620">
+        <div class="legenda">E o mesmo lugar, numa noite em que deu gente. Este Elul, no 1º andar.</div>
+      </div>
+      <div class="heb" lang="he" dir="rtl" style="font-size:22px">וַיַּעֲבֹר ה׳ עַל־פָּנָיו וַיִּקְרָא</div>
+      <p style="font-size:14.5px">Com os dez, o shaliach tsibur diz as treze middot em voz alta, em nome de todo mundo. Sem eles, cada um lê baixinho, sozinho.</p>
+      <p style="font-size:14.5px"><b style="color:var(--gold-bright)">Você entrando, elas são ditas.</b> É essa a mitsvá que se completa no décimo.</p>
+    </div>
+    <button class="btn" data-vai="5" id="btnDepoisDaCena" style="display:none">Continuar</button>
     <button class="sair" data-sair="1">fechar</button>
   </section>
 
@@ -266,6 +321,12 @@
     <button class="btn" id="btnConfirmar">Confirmar pra esta noite</button>
     <button class="btn sec" id="btnHojeNao">Hoje não consigo, me chama outro dia</button>
     <div class="status" id="stFim"></div>
+    <div class="tira">
+      <img src="fotos/m-sala.jpg" alt="o salão do 1º andar" loading="lazy" width="620" height="620">
+      <img src="fotos/m-cheia2.jpg" alt="a casa cheia numa noite de Selichot" loading="lazy" width="620" height="620">
+      <img src="fotos/m-sidur.jpg" alt="sidur aberto na bima" loading="lazy" width="620" height="620">
+    </div>
+    <div class="dim" style="font-size:12px;margin-top:6px">noites deste Elul, no 1º andar</div>
     <button class="sair" id="btnSite">ver o site do minyan</button>
   </section>
 
@@ -346,6 +407,91 @@
 
   var ORIGEM = (function(){ var m = /[?&]c=([A-Za-z0-9_-]{1,24})/.exec(location.search); return m ? m[1] : null; })();
   var PESSOA = null, MEU_NOME = "", TEM_ZAP = false;
+
+
+  // ================= A CENA DO DÉCIMO =================
+  // Dez luzes em roda. Acesas = quem já confirmou esta noite, de verdade.
+  // A que falta pulsa e espera um toque. Quando ela entra, a roda inteira
+  // acende e as treze middot passam pelo meio. É a Torá da tela 4, acontecendo.
+  var MIDOT = ["ה׳","ה׳","אֵל","רַחוּם","וְחַנּוּן","אֶרֶךְ אַפַּיִם","וְרַב חֶסֶד","וֶאֱמֶת",
+               "נֹצֵר חֶסֶד","נֹשֵׂא עָוֹן","וָפֶשַׁע","וְחַטָּאָה","וְנַקֵּה"];
+  var cenaPronta = false, cenaFeita = false, jaTem = 0;
+
+  function montarCena(total){
+    jaTem = Math.max(0, Math.min(10, total));
+    var g = document.getElementById("luzes");
+    g.innerHTML = "";
+    for (var i = 0; i < 10; i++){
+      var ang = (i / 10) * Math.PI * 2 - Math.PI / 2;
+      var x = 150 + Math.cos(ang) * 108, y = 150 + Math.sin(ang) * 108;
+      var acesa = i < jaTem;
+      var chama = (i === jaTem && jaTem < 10);
+      g.insertAdjacentHTML("beforeend",
+        '<g class="luz ' + (acesa ? "acesa" : "apagada") + (chama ? " chama" : "") + '" data-i="' + i + '">' +
+          '<circle class="halo" cx="' + x + '" cy="' + y + '" r="20" fill="#e8cf94" filter="blur(9px)" opacity="0"></circle>' +
+          '<circle class="anel" cx="' + x + '" cy="' + y + '" r="13" fill="none" stroke="#c9a45c" stroke-width="1.2" opacity="0"></circle>' +
+          '<circle class="nucleo" cx="' + x + '" cy="' + y + '" r="9"></circle>' +
+        '</g>');
+    }
+    var t = document.getElementById("cenaTxt");
+    if (jaTem >= 10){
+      t.className = "cenaTxt feito";
+      t.innerHTML = "Esta noite já está de pé, com <b>" + jaTem + "</b>. O próximo faz a corrente crescer.";
+      document.getElementById("toque").style.visibility = "hidden";
+      revelarDepoisDaCena();
+    } else {
+      t.className = "cenaTxt";
+      t.innerHTML = "Agora são <b>" + jaTem + "</b> pra esta noite. " +
+                    (jaTem === 9 ? "Falta <b>uma</b> luz." : "Faltam <b>" + (10 - jaTem) + "</b>.");
+      document.getElementById("toque").style.visibility = "visible";
+    }
+    cenaPronta = true;
+  }
+
+  function revelarDepoisDaCena(){
+    document.getElementById("cenaDepois").style.display = "block";
+    document.getElementById("btnDepoisDaCena").style.display = "block";
+  }
+
+  function acenderTudo(){
+    if (cenaFeita) return;
+    cenaFeita = true;
+    ev("game_regra", "acendeu a cena");
+    document.getElementById("toque").style.visibility = "hidden";
+    var luzes = document.querySelectorAll("#luzes .luz");
+    var atraso = 0;
+    for (var i = jaTem; i < 10; i++){
+      (function(l, d){
+        setTimeout(function(){
+          l.classList.remove("apagada","chama");
+          l.classList.add("acesa","entrou");
+        }, d);
+      })(luzes[i], atraso);
+      atraso += 110;
+    }
+    setTimeout(function(){
+      var o = document.getElementById("onda");
+      o.classList.remove("vai"); void o.getBoundingClientRect(); o.classList.add("vai");
+      var t = document.getElementById("cenaTxt");
+      t.className = "cenaTxt feito";
+      t.innerHTML = "<b>Dez.</b> E aí o kahal diz as treze.";
+    }, atraso + 120);
+    // as treze middot passam pelo meio da roda
+    var alvo = document.getElementById("midaCentro");
+    MIDOT.forEach(function(m, i){
+      setTimeout(function(){
+        alvo.textContent = m;
+        alvo.classList.remove("vai"); void alvo.getBoundingClientRect(); alvo.classList.add("vai");
+      }, atraso + 500 + i * 460);
+    });
+    setTimeout(function(){ alvo.textContent = ""; revelarDepoisDaCena(); }, atraso + 500 + MIDOT.length * 460);
+  }
+
+  document.getElementById("cena").addEventListener("click", function(e){
+    var l = e.target.closest(".luz");
+    if (!cenaPronta || cenaFeita) return;
+    if (l && l.classList.contains("chama")) acenderTudo();
+  });
 
   function ir(n){
     document.querySelectorAll(".tela").forEach(function(s){ s.classList.toggle("on", +s.getAttribute("data-n") === n); });
@@ -519,6 +665,10 @@
     ev("game_fim", "hoje nao");
   });
   $("btnSite").addEventListener("click", function(){ location.href = "../"; });
+
+  rpc("minyan_painel2", {p_noite:NOITE})
+    .then(function(p){ montarCena(p.total); })
+    .catch(function(){ montarCena(7); });   // sem rede, a cena ainda conta a história
 
   ev("game_abriu", ORIGEM || "sem marca");
   rpc("minyan_visita_abre2", {p_device:DEVICE, p_origem: ORIGEM ? ORIGEM + "-convite" : "convite"}).catch(function(){});
