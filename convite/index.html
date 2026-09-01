@@ -52,6 +52,9 @@
   .btn[disabled]{opacity:.5;cursor:default}
   .btn.sec{background:none;border:1px solid rgba(201,164,92,.45);color:var(--gold-bright);font-weight:500;font-size:14.5px;padding:12px}
   .btn:focus-visible,.esc:focus-visible,.dia:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .voltar{position:absolute;left:0;top:-6px;background:none;border:none;color:var(--ivory-dim);font:13px "Hanken Grotesk",sans-serif;cursor:pointer;padding:6px 10px 6px 0}
+  .voltar:hover{color:var(--gold-bright)}
+  .passo{position:relative;height:20px;margin-bottom:6px;font-size:11.5px;color:var(--ivory-dim);letter-spacing:.06em}
   .sair{display:block;width:100%;margin-top:14px;background:none;border:none;color:var(--ivory-dim);font:12.5px "Hanken Grotesk",sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   .caixa{border:1px solid rgba(201,164,92,.35);background:rgba(233,207,148,.05);border-radius:14px;padding:18px 16px;margin:16px 0;text-align:left}
   .caixa b{color:var(--gold-bright)}
@@ -88,6 +91,7 @@
   input::placeholder{color:rgba(185,180,166,.6)}
   select{width:100%;padding:12px;margin-top:9px;border-radius:10px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
   .rotulo{text-align:left;font-size:13px;color:var(--gold);letter-spacing:.05em;margin-top:20px;font-family:"Fraunces",Georgia,serif}
+  .form-zap{margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,164,92,.25)}
   .nota{font-size:11.5px;color:var(--ivory-dim);line-height:1.6;margin-top:11px;text-align:left}
   .nota b{color:var(--turquoise)}
   .status{font-size:12.5px;color:var(--ivory-dim);margin-top:10px;min-height:16px}
@@ -104,6 +108,7 @@
 
   <!-- 1 -->
   <section class="tela on" data-n="1">
+    <div class="passo"><span>1 de 9</span></div>
     <div class="kicker">Selichot da meia-noite · Beit Yaakov</div>
     <h1>Todo mundo junto na meia-noite.</h1>
     <div class="relogio">
@@ -116,6 +121,7 @@
 
   <!-- 2 -->
   <section class="tela" data-n="2">
+    <div class="passo"><button class="voltar" data-volta="1">← voltar</button><span>2 de 9</span></div>
     <div class="kicker">Primeiro, o que é isto</div>
     <h2>Selichot de meia-noite, em São Paulo inteira, tem num lugar só.</h2>
     <p>A hora das Selichot é a madrugada. A cidade toda diz de manhã porque é mais fácil, e ninguém está errado nisso.</p>
@@ -126,6 +132,7 @@
 
   <!-- 3 -->
   <section class="tela" data-n="3">
+    <div class="passo"><button class="voltar" data-volta="2">← voltar</button><span>3 de 9</span></div>
     <div class="kicker">A conta</div>
     <h2>É mais fácil do que parece.</h2>
     <div class="caixa conta">
@@ -141,6 +148,7 @@
 
   <!-- 4 -->
   <section class="tela" data-n="4">
+    <div class="passo"><button class="voltar" data-volta="3">← voltar</button><span>4 de 9</span></div>
     <div class="kicker">Por que dez</div>
     <div class="heb" lang="he" dir="rtl">וַיַּעֲבֹר ה׳ עַל־פָּנָיו וַיִּקְרָא</div>
     <div class="fonte">"e Hashem passou diante dele, e proclamou" · Shemot 34, 6</div>
@@ -153,6 +161,7 @@
 
   <!-- 5 -->
   <section class="tela" data-n="5">
+    <div class="passo"><button class="voltar" data-volta="4">← voltar</button><span>5 de 9</span></div>
     <div class="kicker">Como funciona</div>
     <h2>Três coisas, e acabou.</h2>
     <ul class="fatos">
@@ -166,6 +175,7 @@
 
   <!-- 6 -->
   <section class="tela" data-n="6">
+    <div class="passo"><button class="voltar" data-volta="5">← voltar</button><span>6 de 9</span></div>
     <div class="kicker">O que todo mundo pergunta</div>
     <div class="duvida">
       <div class="p">"E se eu disser que vou e não for?"</div>
@@ -185,7 +195,21 @@
 
   <!-- 7 -->
   <section class="tela" data-n="7">
-    <div class="kicker">Do seu jeito</div>
+    <div class="passo"><button class="voltar" data-volta="6">← voltar</button><span>7 de 9</span></div>
+    <div class="kicker">Dez segundos</div>
+    <h2>Como a gente te chama?</h2>
+    <input type="text" id="inNome" placeholder="seu nome, do jeito que te chamam" maxlength="40" autocomplete="given-name">
+    <input type="tel" id="inZap" placeholder="seu WhatsApp" maxlength="20" autocomplete="tel" inputmode="tel">
+    <div class="nota">O WhatsApp serve <b>só pros avisos do minyan</b>, e na próxima tela você escolhe quais quer receber, ou nenhum. Ele não aparece no site, ninguém do grupo vê, e dá pra apagar seu cadastro inteiro a qualquer hora.</div>
+    <button class="btn" id="btnCadastrar">Continuar</button>
+    <div class="status" id="stCad"></div>
+    <button class="sair" data-sair="1">deixa pra lá</button>
+  </section>
+
+  <!-- 8 -->
+  <section class="tela" data-n="8">
+    <div class="passo"><button class="voltar" data-volta="7">← voltar</button><span>8 de 9</span></div>
+    <div class="kicker" id="oiRegras">Do seu jeito</div>
     <h2>Como você quer ser chamado?</h2>
     <p class="dim">Escolhe o que fizer sentido pra você. Dá pra mudar depois, e "não me chama" também é resposta.</p>
 
@@ -220,24 +244,17 @@
     </div>
 
     <button class="esc" id="r4" style="margin-top:18px"><span class="marca"></span><span>Não me chama, eu apareço quando der<small>zero mensagens, e o site fica aqui quando você quiser</small></span></button>
-    <button class="btn" data-vai="8">Continuar</button>
-    <button class="sair" data-sair="1">fechar</button>
-  </section>
-
-  <!-- 8 -->
-  <section class="tela" data-n="8">
-    <div class="kicker">Dez segundos</div>
-    <h2>Como a gente te chama?</h2>
-    <input type="text" id="inNome" placeholder="seu nome, do jeito que te chamam" maxlength="40" autocomplete="given-name">
-    <input type="tel" id="inZap" placeholder="seu WhatsApp" maxlength="20" autocomplete="tel" inputmode="tel">
-    <div class="nota">O WhatsApp serve <b>só para o que você acabou de escolher</b>. Ele não aparece no site, ninguém do grupo vê, e dá para apagar seu cadastro inteiro a qualquer hora, com dois toques.</div>
-    <button class="btn" id="btnCadastrar">Pronto, é isso</button>
-    <div class="status" id="stCad"></div>
-    <button class="sair" data-sair="1">deixa pra lá</button>
+    <div class="form-zap" id="formZapTarde" style="display:none">
+      <input type="tel" id="inZapTarde" placeholder="seu WhatsApp" maxlength="20" inputmode="tel">
+      <button class="btn sec" id="btnZapTarde">Guardar o WhatsApp</button>
+    </div>
+    <button class="btn" id="btnRegras">Pronto, é isso</button>
+    <div class="status" id="stRegras"></div>
   </section>
 
   <!-- 9 -->
   <section class="tela" data-n="9">
+    <div class="passo"><span>9 de 9</span></div>
     <div class="kicker">Bem-vindo</div>
     <h2 id="ola">Agora você é um dos que completam.</h2>
     <div class="resumo" id="resumo"></div>
@@ -324,11 +341,11 @@
     // a conta que convence: quantas pessoas, indo quantas vezes, fecham todas as noites
     var precisa = n * 10;
     var vezes = 4, gente = Math.ceil(precisa / vezes);
-    $("contaVezes").innerHTML = "<b>" + gente + " caras</b> indo <b>" + vezes + " vezes</b> cada um";
+    $("contaVezes").innerHTML = "<b>" + gente + " de nós</b> indo <b>" + vezes + " vezes</b> cada um";
   })();
 
   var ORIGEM = (function(){ var m = /[?&]c=([A-Za-z0-9_-]{1,24})/.exec(location.search); return m ? m[1] : null; })();
-  var PESSOA = null, MEU_NOME = "";
+  var PESSOA = null, MEU_NOME = "", TEM_ZAP = false;
 
   function ir(n){
     document.querySelectorAll(".tela").forEach(function(s){ s.classList.toggle("on", +s.getAttribute("data-n") === n); });
@@ -340,6 +357,9 @@
   }
   document.querySelectorAll("[data-vai]").forEach(function(b){
     b.addEventListener("click", function(){ ir(+b.getAttribute("data-vai")); });
+  });
+  document.querySelectorAll("[data-volta]").forEach(function(b){
+    b.addEventListener("click", function(){ ir(+b.getAttribute("data-volta")); });
   });
   document.querySelectorAll("[data-sair]").forEach(function(b){
     b.addEventListener("click", function(){ fechou = true; ev("game_saiu", "tela " + tela); location.href = "../"; });
@@ -401,40 +421,73 @@
   $("btnCadastrar").addEventListener("click", function(){
     var nome = $("inNome").value.trim().replace(/\s+/g," ");
     var zap  = $("inZap").value.trim();
+    if (PESSOA){ ir(8); return; }                        // já se cadastrou e voltou: só segue
     if (nome.length < 2){ $("stCad").textContent = "escreve seu nome pra gente saber quem chegou"; $("inNome").focus(); return; }
-    var precisaZap = !regras.r4 && (regras.r1 || regras.r2 || dias.length > 0);
-    if (precisaZap && !zap){ $("stCad").textContent = "pro que você escolheu, a gente precisa do WhatsApp"; $("inZap").focus(); return; }
     if (zap && (soDigitos(zap).length < 10 || soDigitos(zap).length > 13)){
       $("stCad").textContent = "esse WhatsApp parece incompleto"; $("inZap").focus(); return;
     }
     var b = this; b.disabled = true; $("stCad").textContent = "guardando…";
     rpc("minyan_pessoa_criar", {p_nome:nome, p_telefone: zap || null})
       .then(function(r){
-        PESSOA = r.pessoa; MEU_NOME = r.nome;
+        PESSOA = r.pessoa; MEU_NOME = r.nome; TEM_ZAP = !!zap;
         try{
           localStorage.setItem("mae-pessoa", PESSOA);
           localStorage.setItem("mae-pessoa-nome", MEU_NOME);
           if (zap) localStorage.setItem("mae-pessoa-zap", "1");
         }catch(e){}
         ev("game_cadastro", "convite", true);
-        return rpc("minyan_regras_salvar", {
-          p_pessoa: PESSOA,
-          p_aviso_tarde: !!regras.r1 && !regras.r4,
-          p_chama_se_faltar: (regras.r2 && !regras.r4) ? 2 : null,
-          p_silencio_depois: (regras.r3 && !regras.r4) ? $("silencio").value : null,
-          p_nunca: !!regras.r4,
-          p_dias_semana: regras.r4 ? null : (dias.length ? dias : null),
-          p_meta_noites: regras.r4 ? null : (meta >= 90 ? 30 : meta)
-        });
-      })
-      .then(function(){
         $("stCad").textContent = "";
-        $("ola").textContent = "Boa, " + MEU_NOME + ". Agora você é um dos que completam.";
-        $("resumo").innerHTML = frasesDasRegras().join("<br>");
-        ev("game_fim", "cadastrou");
-        ir(9);
+        $("oiRegras").textContent = MEU_NOME + ", agora só falta isto:";
+        ir(8);
       })
       .catch(function(e){ $("stCad").textContent = (e.message || "não deu. Tenta de novo"); })
+      .then(function(){ b.disabled = false; });
+  });
+
+  // ---- tela 8: salvar as regras e fechar
+  $("btnRegras").addEventListener("click", function(){
+    if (!PESSOA){ ir(7); return; }
+    var precisaZap = !regras.r4 && (regras.r1 || regras.r2 || dias.length > 0);
+    if (precisaZap && !TEM_ZAP){
+      $("formZapTarde").style.display = "block";
+      $("stRegras").textContent = "pro que você escolheu, a gente precisa do WhatsApp";
+      $("inZapTarde").focus();
+      return;
+    }
+    var b = this; b.disabled = true; $("stRegras").textContent = "guardando…";
+    salvarRegras().then(function(){
+      $("stRegras").textContent = "";
+      $("ola").textContent = "Agora você é um dos que completam, " + MEU_NOME + ".";
+      $("resumo").innerHTML = frasesDasRegras().join("<br>");
+      ev("game_fim", "cadastrou");
+      ir(9);
+    }).catch(function(e){ $("stRegras").textContent = e.message || "não deu. Tenta de novo"; })
+      .then(function(){ b.disabled = false; });
+  });
+  function salvarRegras(){
+    return rpc("minyan_regras_salvar", {
+      p_pessoa: PESSOA,
+      p_aviso_tarde: !!regras.r1 && !regras.r4,
+      p_chama_se_faltar: (regras.r2 && !regras.r4) ? 2 : null,
+      p_silencio_depois: (regras.r3 && !regras.r4) ? $("silencio").value : null,
+      p_nunca: !!regras.r4,
+      p_dias_semana: regras.r4 ? null : (dias.length ? dias : null),
+      p_meta_noites: regras.r4 ? null : (meta >= 90 ? 30 : meta)
+    });
+  }
+  $("btnZapTarde").addEventListener("click", function(){
+    var zap = $("inZapTarde").value.trim();
+    if (soDigitos(zap).length < 10 || soDigitos(zap).length > 13){
+      $("stRegras").textContent = "esse WhatsApp parece incompleto"; return;
+    }
+    var b = this; b.disabled = true;
+    rpc("minyan_pessoa_telefone", {p_pessoa:PESSOA, p_telefone:zap})
+      .then(function(){
+        TEM_ZAP = true; try{ localStorage.setItem("mae-pessoa-zap","1"); }catch(e){}
+        $("formZapTarde").style.display = "none"; $("stRegras").textContent = "";
+        $("btnRegras").click();
+      })
+      .catch(function(){ $("stRegras").textContent = "não deu pra guardar"; })
       .then(function(){ b.disabled = false; });
   });
 
