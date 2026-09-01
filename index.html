@@ -329,12 +329,15 @@
 
   // medidor: registra O CLIQUE, por aparelho, nunca por pessoa.
   // A lista de eventos aceitos é fechada no banco; qualquer outro nome é ignorado lá.
-  function ev(nome, detalhe){
+  function ev(nome, detalhe, semAparelho){
     try{
       fetch(SB_URL+"/rest/v1/rpc/minyan_ev", {
         method:"POST",
         headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
-        body: JSON.stringify({p_device:DEVICE, p_evento:nome, p_detalhe:detalhe || null}),
+        // semAparelho: usado em tudo que acontece no MESMO instante em que um nome
+        // entra no banco. Com o aparelho junto, bastaria cruzar o horário pra ligar
+        // a pessoa às confirmações anônimas dela, e a tela promete o contrário.
+        body: JSON.stringify({p_device: semAparelho ? null : DEVICE, p_evento:nome, p_detalhe:detalhe || null}),
         keepalive:true
       }).catch(function(){});
     }catch(e){}
@@ -507,7 +510,7 @@
   function soDigitos(s){ return (s||"").replace(/\D/g,""); }
 
   function confirmarComNome(){
-    ev("confirmar", "nome");
+    ev("confirmar", "nome", true);
     var levava = meusMais();   // quem já tinha dito que traz gente não perde isso na troca
     return rpc("minyan_confirmar_nome", {p_noite:NOITE, p_pessoa:PESSOA, p_device:DEVICE})
       .then(function(p){
@@ -584,7 +587,7 @@
         PESSOA = r.pessoa; MEU_NOME = r.nome;
         localStorage.setItem("mae-pessoa", PESSOA);
         localStorage.setItem("mae-pessoa-nome", MEU_NOME);
-        ev("game_cadastro", "site");
+        ev("game_cadastro", "site", true);
         return confirmarComNome();
       })
       .catch(function(){ $("stConf").textContent = "não deu pra guardar. Confere a internet e tenta de novo"; })
