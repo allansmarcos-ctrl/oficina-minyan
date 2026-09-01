@@ -84,6 +84,7 @@
   .mais-ctrl b{font-family:"Fraunces",Georgia,serif;font-size:20px;color:var(--gold-bright);min-width:16px;text-align:center}
   .sou-eu{display:none;font-size:12px;color:var(--ivory-dim);margin-top:12px;letter-spacing:.03em}
   .sou-eu b{color:var(--gold-bright)}
+  .trazidos{display:none;font-size:12px;color:var(--ivory-dim);margin-top:6px;letter-spacing:.03em;font-style:italic}
   .nomes{display:none;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:14px}
   .pastilha{font-size:13px;color:var(--gold-bright);border:1px solid rgba(201,164,92,.5);background:rgba(3,7,17,.5);border-radius:99px;padding:5px 12px;animation:acender .5s ease backwards}
   .pastilha.anon{color:var(--ivory-dim);border-color:rgba(185,180,166,.3);border-style:dashed}
@@ -173,6 +174,7 @@
       <div class="num" id="num">…</div>
       <div class="num-label" id="numLabel">confirmados pra esta noite</div>
       <div class="meta-linha" id="metaLinha"></div>
+      <div class="trazidos" id="trazidos"></div>
       <div class="agora">hoje às <b id="horaTopo">…</b> <span>· 1º andar do Beit Yaakov · até 35 min</span></div>
       <div class="nomes" id="nomes"></div>
       <div class="nomes-legenda" id="nomesLegenda"></div>
@@ -194,6 +196,12 @@
           <b id="maisN">0</b>
           <button class="mais-btn" id="maisMais" aria-label="mais um">+</button>
         </div>
+      </div>
+      <div class="form-nome" id="formZap">
+        <div class="mini-nota" style="margin:0 0 9px"><b>Pra trazer alguém junto, deixa seu WhatsApp.</b> É como a gente te avisa se a noite mudar, e é o que faz uma promessa valer no número. Ninguém vê ele em lugar nenhum.</div>
+        <input type="tel" id="inZapDepois" placeholder="seu WhatsApp" maxlength="20" autocomplete="tel" inputmode="tel">
+        <button class="btn" id="btnSalvarZap">Guardar e trazer alguém</button>
+        <button class="link-sec" id="btnCancelaZap">deixa pra lá, vou sozinho</button>
       </div>
 
       <details class="abre" id="detAnon">
@@ -313,6 +321,7 @@
   function confirmadoNome(){ return PESSOA && localStorage.getItem("mae-nome-"+NOITE) === "1"; }
   function marcaNome(v){ localStorage.setItem("mae-nome-"+NOITE, v ? "1" : "0"); }
   // quantos a pessoa disse que traz junto (o banco guarda; aqui é só pra tela)
+  var TEM_ZAP = localStorage.getItem("mae-pessoa-zap") === "1";
   function meusMais(){ return parseInt(localStorage.getItem("mae-mais-"+NOITE) || "0", 10) || 0; }
   function setMeusMais(n){ localStorage.setItem("mae-mais-"+NOITE, String(n)); }
 
@@ -324,7 +333,14 @@
       method:"POST",
       headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
       body: JSON.stringify(corpo)
-    }).then(function(r){ if(!r.ok) throw new Error(nome+" "+r.status); return r.json(); });
+    }).then(function(r){
+      // a mensagem do banco tem que chegar até aqui: é ela que diz à pessoa
+      // o que fazer (deixar o WhatsApp, confirmar com nome antes, e por aí)
+      return r.json().then(function(j){
+        if (!r.ok) throw new Error((j && j.message) || (nome+" "+r.status));
+        return j;
+      }, function(){ if (!r.ok) throw new Error(nome+" "+r.status); return null; });
+    });
   }
 
   // medidor: registra O CLIQUE, por aparelho, nunca por pessoa.
@@ -425,12 +441,14 @@
     if (PESSOA && MEU_NOME){ $("souEuNome").textContent = MEU_NOME; $("souEu").style.display = "block"; }
     else { $("souEu").style.display = "none"; }
 
-    // "eu e mais um": só faz sentido depois de a pessoa estar dentro
-    var dentro = confirmado() || confirmadoNome(), m = dentro ? meusMais() : 0;
+    // "eu e mais um": só pra quem está com nome. Prometer gente exige se identificar,
+    // porque promessa que ninguém pode conferir foi o que inflou o placar.
+    var dentro = confirmadoNome(), m = dentro ? meusMais() : 0;
     $("cardMais").style.display = dentro ? "flex" : "none";
+    if (!dentro) $("formZap").style.display = "none";
     $("maisN").textContent = m;
     $("maisMenos").disabled = m <= 0;
-    $("maisMais").disabled = m >= 5;
+    $("maisMais").disabled = m >= 2;
     $("maisTxt").innerHTML = m === 0
       ? "vem alguém com você?"
       : "você traz <b>" + m + "</b> " + (m === 1 ? "pessoa junto" : "pessoas junto");
@@ -451,6 +469,11 @@
       m.className = "meta-linha";
       m.innerHTML = "precisamos de "+META+" · "+(total === 0 ? "<b>seja o primeiro a confirmar</b>" : "faltam <b>"+(META-total)+"</b>");
     }
+    var t = $("trazidos");
+    if (p.trazidos > 0){
+      t.textContent = "e mais " + p.trazidos + (p.trazidos === 1 ? " que vem junto" : " que vêm junto") + ", prometidos por quem confirmou";
+      t.style.display = "block";
+    } else { t.style.display = "none"; }
     pintarNomes(p);
     pintarBotoes();
     if (typeof p.streak === "number"){
@@ -541,9 +564,31 @@
           : "anotado: você e mais " + novo + ". Isso é o que faz a noite virar.";
         pintar(p, d > 0);
       })
-      .catch(function(){ $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; })
+      .catch(function(e){
+        if (/WhatsApp/.test(e.message || "")){
+          $("formZap").style.display = "block";
+          $("inZapDepois").focus();
+          $("stConf").textContent = "";
+        } else { $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; }
+      })
       .then(function(){ ocupado = false; });
   }
+  $("btnCancelaZap").addEventListener("click", function(){ $("formZap").style.display = "none"; });
+  $("btnSalvarZap").addEventListener("click", function(){
+    var zap = $("inZapDepois").value.trim();
+    if (soDigitos(zap).length < 10 || soDigitos(zap).length > 13){
+      $("stConf").textContent = "esse WhatsApp parece incompleto"; $("inZapDepois").focus(); return;
+    }
+    var b = this; b.disabled = true;
+    rpc("minyan_pessoa_telefone", {p_pessoa:PESSOA, p_telefone:zap})
+      .then(function(){
+        TEM_ZAP = true; localStorage.setItem("mae-pessoa-zap", "1");
+        $("formZap").style.display = "none"; $("inZapDepois").value = "";
+        mudarMais(1);
+      })
+      .catch(function(){ $("stConf").textContent = "não deu pra guardar. Tenta de novo"; })
+      .then(function(){ b.disabled = false; });
+  });
   $("maisMais").addEventListener("click", function(){ mudarMais(1); });
   $("maisMenos").addEventListener("click", function(){ mudarMais(-1); });
 
@@ -587,6 +632,7 @@
         PESSOA = r.pessoa; MEU_NOME = r.nome;
         localStorage.setItem("mae-pessoa", PESSOA);
         localStorage.setItem("mae-pessoa-nome", MEU_NOME);
+        if (zap){ TEM_ZAP = true; localStorage.setItem("mae-pessoa-zap", "1"); }
         ev("game_cadastro", "site", true);
         return confirmarComNome();
       })
@@ -607,6 +653,7 @@
     rpc("minyan_pessoa_apagar", {p_pessoa:PESSOA}).then(function(){
       PESSOA = null; MEU_NOME = ""; marcaNome(false);
       localStorage.removeItem("mae-pessoa"); localStorage.removeItem("mae-pessoa-nome");
+      localStorage.removeItem("mae-pessoa-zap"); TEM_ZAP = false;
       l.textContent = "apagar meu cadastro";
       $("stConf").textContent = "cadastro apagado. Seu nome saiu de todas as listas.";
       return atualizar(false);

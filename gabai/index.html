@@ -60,6 +60,13 @@
   .cliques{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
   .clique{background:rgba(3,7,17,.5);border:1px solid rgba(201,164,92,.25);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--ivory-dim)}
   .clique b{color:var(--gold-bright);font-weight:600;font-family:"Fraunces",Georgia,serif}
+  .ficha{border-top:1px solid rgba(201,164,92,.18);padding:9px 0;font-size:13px}
+  .ficha:first-child{border-top:none}
+  .ficha b{color:var(--gold-bright);font-size:14px}
+  .ficha .linha{color:var(--ivory-dim);font-size:11.5px;letter-spacing:.03em;margin-top:3px;word-break:break-word}
+  .ficha .zap{color:var(--ok)}
+  .ficha .semzap{color:var(--nao)}
+  .ficha .promessa{color:var(--gold-bright)}
 </style>
 </head>
 <body>
@@ -90,6 +97,12 @@
       </div>
       <div class="status" style="text-align:left"><b style="color:var(--nao)">Lance aqui só quem confirmou POR FORA</b> (zap, ligação, na mão). Quem já apertou o botão no site vira contagem em dobro se você lançar de novo, e a noite parece ter um a mais do que tem.<br><br>O nome só vai pro site quando você aperta "aparece na lista". Use nos que deixaram; na dúvida, "só soma no número", que ninguém é exposto sem querer.</div>
       <div id="listaNomes"></div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Quem se identificou</div>
+      <div id="identificacao">carregando…</div>
+      <div class="status" style="text-align:left">Só aparece quem escolheu se cadastrar. Quem confirma anônimo não deixa nada, nem aqui nem no banco.</div>
     </div>
 
     <div class="card">
@@ -170,9 +183,9 @@
     var total = totalDe(p);
     $("num").textContent = total;
     var comNome = (p.nominais && p.nominais.length) || 0;
-    $("numLabel").innerHTML = "confirmados pra esta noite ("+rotulo(NOITE).titulo+")"
-      + (p.anonimos != null ? "<br><span style='font-size:11.5px'>"+comNome+" com nome na tela · "+p.anonimos+" sem nome"
-          + (TRAZIDOS ? " · "+TRAZIDOS+" "+(TRAZIDOS===1?"vem":"vêm")+" de carona com alguém" : "")+"</span>" : "");
+    $("numLabel").innerHTML = "<b>pessoas que apertaram o botão</b> ("+rotulo(NOITE).titulo+")"
+      + (p.anonimos != null ? "<br><span style='font-size:11.5px'>"+comNome+" com nome na tela · "+p.anonimos+" sem nome</span>" : "")
+      + (p.trazidos ? "<br><span style='font-size:11.5px;color:var(--gold-bright)'>+ "+p.trazidos+" prometidos por eles, que não entram na conta dos 10</span>" : "");
     if (p.aviso){ $("avisoAtual").textContent = "no ar: "+p.aviso; $("avisoAtual").classList.remove("escondido"); }
     else { $("avisoAtual").classList.add("escondido"); }
     var mapa = {}; (p.noites||[]).forEach(function(n){ mapa[n.noite] = n; });
@@ -253,8 +266,30 @@
     pintar(d.painel); pintarNomes(d.nomes);
   }
 
+  function pintarIdentificacao(lista){
+    if (!lista || !lista.length){ $("identificacao").innerHTML = "<div class='vazio'>ninguém se cadastrou ainda</div>"; return; }
+    var html = "";
+    lista.forEach(function(f){
+      html += "<div class='ficha'><b>"+txt(f.nome)+"</b>"
+        + (f.promessas ? " <span class='promessa'>prometeu +"+f.promessas+"</span>" : "")
+        + "<div class='linha'>"
+          + (f.telefone ? "<span class='zap'>"+txt(f.telefone)+"</span>" : "<span class='semzap'>sem WhatsApp</span>")
+          + " · " + f.noites + (f.noites === 1 ? " noite" : " noites")
+          + " · cadastrou " + txt(f.cadastrado)
+          + (f.visto_em ? " · visto " + txt(f.visto_em) : "")
+        + "</div>"
+        + "<div class='linha'>" + (f.ip ? "de " + txt(f.ip) : "sem marca de origem")
+          + (f.ip_ultimo && f.ip_ultimo !== f.ip ? " · última vez de " + txt(f.ip_ultimo) : "")
+        + "</div>"
+        + (f.navegador ? "<div class='linha' style='opacity:.7'>" + txt(f.navegador.slice(0,90)) + "</div>" : "")
+        + "</div>";
+    });
+    $("identificacao").innerHTML = html;
+  }
+
   function atualizar(){
     rpc("minyan_adm_metricas2", {p_senha:SENHA}).then(pintarMetricas).catch(function(){});
+    rpc("minyan_adm_identificacao", {p_senha:SENHA}).then(pintarIdentificacao).catch(function(){});
     return rpc("minyan_adm_noite_lista", {p_senha:SENHA, p_noite:NOITE}).then(receber)
       .catch(function(e){ $("stGeral").textContent = "não carregou: "+e.message; });
   }
