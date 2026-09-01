@@ -417,8 +417,10 @@
                "נֹצֵר חֶסֶד","נֹשֵׂא עָוֹן","וָפֶשַׁע","וְחַטָּאָה","וְנַקֵּה"];
   var cenaPronta = false, cenaFeita = false, jaTem = 0;
 
+  var totalReal = 0;
   function montarCena(total){
-    jaTem = Math.max(0, Math.min(10, total));
+    totalReal = Math.max(0, total);
+    jaTem = Math.min(10, totalReal);   // a roda tem dez lugares; o texto fala o número de verdade
     var g = document.getElementById("luzes");
     g.innerHTML = "";
     for (var i = 0; i < 10; i++){
@@ -436,12 +438,12 @@
     var t = document.getElementById("cenaTxt");
     if (jaTem >= 10){
       t.className = "cenaTxt feito";
-      t.innerHTML = "Esta noite já está de pé, com <b>" + jaTem + "</b>. O próximo faz a corrente crescer.";
+      t.innerHTML = "Esta noite já está de pé, com <b>" + totalReal + "</b>. O próximo faz a corrente crescer.";
       document.getElementById("toque").style.visibility = "hidden";
       revelarDepoisDaCena();
     } else {
       t.className = "cenaTxt";
-      t.innerHTML = "Agora são <b>" + jaTem + "</b> pra esta noite. " +
+      t.innerHTML = "Agora são <b>" + totalReal + "</b> pra esta noite. " +
                     (jaTem === 9 ? "Falta <b>uma</b> luz." : "Faltam <b>" + (10 - jaTem) + "</b>.");
       document.getElementById("toque").style.visibility = "visible";
     }
