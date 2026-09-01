@@ -67,6 +67,12 @@
   .ficha .zap{color:var(--ok)}
   .ficha .semzap{color:var(--nao)}
   .ficha .promessa{color:var(--gold-bright)}
+  .chamar-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(201,164,92,.18)}
+  .chamar-row:first-child{border-top:none}
+  .chamar-row .quem{flex:1;font-size:14px}
+  .chamar-row .quem small{display:block;color:var(--ivory-dim);font-size:11.5px;margin-top:2px}
+  .zapbtn{padding:8px 12px;border-radius:8px;border:1px solid rgba(125,223,154,.5);background:rgba(125,223,154,.08);color:var(--ok);font:600 12.5px "Hanken Grotesk",sans-serif;text-decoration:none;flex:none}
+  .silenciados{margin-top:10px;font-size:11.5px;color:var(--ivory-dim);font-style:italic}
 </style>
 </head>
 <body>
@@ -97,6 +103,12 @@
       </div>
       <div class="status" style="text-align:left"><b style="color:var(--nao)">Lance aqui só quem confirmou POR FORA</b> (zap, ligação, na mão). Quem já apertou o botão no site vira contagem em dobro se você lançar de novo, e a noite parece ter um a mais do que tem.<br><br>O nome só vai pro site quando você aperta "aparece na lista". Use nos que deixaram; na dúvida, "só soma no número", que ninguém é exposto sem querer.</div>
       <div id="listaNomes"></div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Quem chamar agora</div>
+      <div id="chamar">carregando…</div>
+      <div class="status" style="text-align:left" id="notaChamar"></div>
     </div>
 
     <div class="card">
@@ -287,9 +299,36 @@
     $("identificacao").innerHTML = html;
   }
 
+  // a lista de chamada: quem pediu pra ser chamado, e ainda nao confirmou hoje
+  function pintarChamar(c){
+    var lista = c.chamar || [];
+    if (c.faltam === 0){
+      $("chamar").innerHTML = "<div class='vazio'>o minyan de hoje já está de pé. Ninguém precisa ser chamado.</div>";
+    } else if (!lista.length){
+      $("chamar").innerHTML = "<div class='vazio'>ninguém na fila agora. Quem se cadastrou já confirmou, ou pediu silêncio a esta hora.</div>";
+    } else {
+      var html = "";
+      lista.forEach(function(x){
+        var zap = (x.telefone || "").replace(/\D/g, "");
+        if (zap.length && zap.charAt(0) !== "5") zap = "55" + zap;
+        html += "<div class='chamar-row'>"
+          + "<span class='quem'>" + txt(x.nome) + "<small>" + txt(x.porque) + "</small></span>"
+          + (zap ? "<a class='zapbtn' target='_blank' rel='noopener' href='https://wa.me/" + zap + "'>chamar</a>" : "")
+          + "</div>";
+      });
+      $("chamar").innerHTML = html;
+    }
+    var nota = "Faltam " + c.faltam + " pra fechar, e agora são " + c.agora + ". A lista respeita o que cada um pediu, e some quem já confirmou.";
+    if ((c.em_silencio || []).length){
+      nota += " Em silêncio agora: " + c.em_silencio.map(function(s){ return s.nome + " (pediu até " + s.depois_de + ")"; }).join(", ") + ".";
+    }
+    $("notaChamar").textContent = nota;
+  }
+
   function atualizar(){
     rpc("minyan_adm_metricas2", {p_senha:SENHA}).then(pintarMetricas).catch(function(){});
     rpc("minyan_adm_identificacao", {p_senha:SENHA}).then(pintarIdentificacao).catch(function(){});
+    rpc("minyan_adm_chamar_agora", {p_senha:SENHA}).then(pintarChamar).catch(function(){});
     return rpc("minyan_adm_noite_lista", {p_senha:SENHA, p_noite:NOITE}).then(receber)
       .catch(function(e){ $("stGeral").textContent = "não carregou: "+e.message; });
   }

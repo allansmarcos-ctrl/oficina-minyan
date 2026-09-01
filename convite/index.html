@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Um convite · Minyan Am Echad</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#030711">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:title" content="Um convite · Minyan Am Echad">
+<meta property="og:description" content="Cinco minutos pra entender por que este minyan existe, e pra decidir como você quer ser chamado.">
+<meta property="og:image" content="https://minyan-am-echad.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕯️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --night:#030711; --night-deep:#0e1b38; --ivory:#f2ede2; --ivory-dim:#b9b4a6;
+    --gold:#c9a45c; --gold-bright:#e8cf94; --turquoise:#4fd1d9; --ok:#7ddf9a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1.5px 1.5px at 18% 12%, rgba(242,237,226,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 74% 7%, rgba(242,237,226,.28) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 88% 22%, rgba(232,207,148,.30) 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 18%, rgba(79,209,217,.25) 50%, transparent 51%),
+      radial-gradient(120% 90% at 50% -10%, var(--night-deep) 0%, var(--night) 55%) var(--night);
+    color:var(--ivory); font:16px/1.65 "Hanken Grotesk",system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:0 18px 34px; text-align:center;
+  }
+  .barra{position:sticky;top:0;width:100%;height:3px;background:rgba(201,164,92,.15);z-index:5}
+  .barra i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-bright));width:0;transition:width .45s ease}
+  main{width:min(430px,100%);flex:1;display:flex;flex-direction:column;justify-content:center;padding:26px 0}
+  .tela{display:none;animation:entra .5s ease}
+  .tela.on{display:block}
+  @keyframes entra{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .kicker{font-family:"Fraunces",Georgia,serif;font-size:11.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--gold-bright);font-size:clamp(30px,8.5vw,44px);line-height:1.12;margin:0 0 16px;text-wrap:balance}
+  h2{font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--gold-bright);font-size:clamp(24px,7vw,32px);line-height:1.2;margin:0 0 14px;text-wrap:balance}
+  p{margin:0 0 14px;color:var(--ivory);font-size:15.5px;text-wrap:pretty}
+  p.dim{color:var(--ivory-dim);font-size:14px}
+  .heb{font-family:"Times New Roman",serif;font-size:26px;line-height:1.8;color:var(--gold-bright);direction:rtl;margin:6px 0 6px}
+  .fonte{font-size:11.5px;color:var(--ivory-dim);letter-spacing:.06em;margin-bottom:16px}
+  .btn{display:block;width:100%;margin-top:18px;padding:15px;border:none;border-radius:11px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#211703;font:600 16px "Hanken Grotesk",sans-serif;cursor:pointer;transition:filter .25s ease,transform .12s ease}
+  .btn:active{transform:scale(.985)}
+  .btn:hover{filter:brightness(1.06)}
+  .btn[disabled]{opacity:.5;cursor:default}
+  .btn.sec{background:none;border:1px solid rgba(201,164,92,.45);color:var(--gold-bright);font-weight:500;font-size:14.5px;padding:12px}
+  .btn:focus-visible,.esc:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .sair{display:block;width:100%;margin-top:14px;background:none;border:none;color:var(--ivory-dim);font:12.5px "Hanken Grotesk",sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .caixa{border:1px solid rgba(201,164,92,.35);background:rgba(233,207,148,.045);border-radius:14px;padding:18px 16px;margin:14px 0;text-align:left}
+  .caixa b{color:var(--gold-bright)}
+  .duvida{text-align:left;border-left:3px solid rgba(201,164,92,.5);padding:2px 0 2px 14px;margin:0 0 18px}
+  .duvida .p{font-family:"Fraunces",Georgia,serif;font-size:17px;color:var(--gold-bright);margin-bottom:6px;line-height:1.35}
+  .duvida .r{font-size:14.5px;color:var(--ivory);line-height:1.6}
+  .fatos{text-align:left;margin:6px 0 0;padding:0;list-style:none}
+  .fatos li{padding:11px 0;border-top:1px solid rgba(201,164,92,.2);font-size:15px}
+  .fatos li:first-child{border-top:none}
+  .fatos b{color:var(--gold-bright);font-family:"Fraunces",Georgia,serif}
+  .esc{display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;margin-top:9px;padding:13px 14px;border:1px solid rgba(201,164,92,.35);border-radius:11px;background:rgba(3,7,17,.45);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif;cursor:pointer;transition:border-color .2s ease,background .2s ease}
+  .esc:hover{border-color:var(--gold)}
+  .esc.on{border-color:var(--ok);background:rgba(125,223,154,.08)}
+  .esc .marca{width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(201,164,92,.6);flex:none;margin-top:1px;position:relative}
+  .esc.on .marca{border-color:var(--ok);background:var(--ok)}
+  .esc.on .marca::after{content:"✓";position:absolute;inset:0;color:#06210f;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .esc small{display:block;color:var(--ivory-dim);font-size:12.5px;margin-top:2px}
+  input{width:100%;padding:13px;margin-top:9px;border-radius:10px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15.5px "Hanken Grotesk",sans-serif}
+  input::placeholder{color:rgba(185,180,166,.6)}
+  select{width:100%;padding:12px;margin-top:9px;border-radius:10px;border:1px solid rgba(201,164,92,.35);background:rgba(3,7,17,.6);color:var(--ivory);font:15px "Hanken Grotesk",sans-serif}
+  .nota{font-size:11.5px;color:var(--ivory-dim);line-height:1.6;margin-top:11px;text-align:left}
+  .nota b{color:var(--turquoise)}
+  .status{font-size:12.5px;color:var(--ivory-dim);margin-top:10px;min-height:16px}
+  .placar{font-family:"Fraunces",Georgia,serif;font-size:52px;line-height:1;color:var(--gold-bright);margin:4px 0}
+  .resumo{text-align:left;font-size:14px;color:var(--ivory-dim);line-height:1.8;margin-top:8px}
+  .resumo b{color:var(--gold-bright)}
+  footer{color:var(--ivory-dim);font-size:11.5px;letter-spacing:.06em;padding-top:10px}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="barra"><i id="barra"></i></div>
+<main>
+
+  <!-- 1 -->
+  <section class="tela on" data-n="1">
+    <div class="kicker">Selichot da meia-noite · Beit Yaakov</div>
+    <h1>Todo mundo junto na meia-noite.</h1>
+    <p class="dim">Cinco minutos pra você entender por que este minyan existe, e pra decidir como quer ser chamado. Sem compromisso nenhum no fim.</p>
+    <button class="btn" data-vai="2">Começar</button>
+  </section>
+
+  <!-- 2 -->
+  <section class="tela" data-n="2">
+    <div class="kicker">Primeiro, o que é isto</div>
+    <h2>As Selichot da meia-noite acontecem num lugar só em São Paulo.</h2>
+    <p>A hora das Selichot é a madrugada. Quase toda a cidade diz de manhã, por conveniência, e está tudo certo com isso.</p>
+    <p>Aqui a gente diz na hora. É por isso que este minyan existe, e é exatamente por isso que ele precisa ser feito à mão, toda noite.</p>
+    <button class="btn" data-vai="3">Continuar</button>
+    <button class="sair" data-sair="1">fechar</button>
+  </section>
+
+  <!-- 3 -->
+  <section class="tela" data-n="3">
+    <div class="kicker">A Torá do décimo</div>
+    <div class="heb" lang="he" dir="rtl">וַיַּעֲבֹר ה׳ עַל־פָּנָיו וַיִּקְרָא</div>
+    <div class="fonte">"e Hashem passou diante dele, e proclamou" · Shemot 34, 6</div>
+    <p>Depois do bezerro de ouro, quando o povo tinha tudo para ser deixado para trás, Moshe pediu para entender o caminho de Hashem. A resposta veio em treze medidas de misericórdia, proclamadas em voz alta.</p>
+    <p>O coração das Selichot é esse trecho, o Vayaavor. Ele pertence ao público: <b>com o minyan formado, o shaliach tsibur o proclama em nome de todos</b>. Enquanto o décimo não chega, cada um lê o versículo para si, baixinho.</p>
+    <div class="caixa"><b>A sua presença é o que faz as treze middot serem ditas naquela madrugada.</b> É essa a mitsvá que se completa no décimo.</div>
+    <button class="btn" data-vai="4">Continuar</button>
+    <button class="sair" data-sair="1">fechar</button>
+  </section>
+
+  <!-- 4 -->
+  <section class="tela" data-n="4">
+    <div class="kicker">Como funciona</div>
+    <h2>Três fatos, sem enfeite.</h2>
+    <ul class="fatos">
+      <li><b>Meia-noite.</b> Começa três minutos antes de chatzot. O horário exato de cada noite fica no site.</li>
+      <li><b>35 minutos.</b> Cronometrados, do começo ao fim. Todo mundo sabe a hora que volta pra casa.</li>
+      <li><b>Anônimo.</b> Confirmar é um botão, ninguém vê quem apertou, e desistir é o mesmo botão.</li>
+    </ul>
+    <button class="btn" data-vai="5">Continuar</button>
+    <button class="sair" data-sair="1">fechar</button>
+  </section>
+
+  <!-- 5 -->
+  <section class="tela" data-n="5">
+    <div class="kicker">O peso sai das costas</div>
+    <div class="duvida">
+      <div class="p">"E se eu disser que vou e não for?"</div>
+      <div class="r">Ninguém segura este minyan sozinho. Você está completando, e completar é uma coisa que se faz junto. Se não der, você aperta o mesmo botão e sai. Ninguém fica sabendo, e ninguém cobra.</div>
+    </div>
+    <div class="duvida">
+      <div class="p">"Não dá pra garantir de tarde o que eu vou conseguir à meia-noite."</div>
+      <div class="r">A gente sabe. Por isso aqui a ordem é outra: você diz como quer ser chamado, e na hora certa alguém te conta como está a noite. Aí você decide com a informação na mão.</div>
+    </div>
+    <div class="duvida">
+      <div class="p">"Vou perder o shacharit de manhã."</div>
+      <div class="r">É uma preocupação de verdade, e essa conta quem faz é o seu Rav, com o seu horário e a sua rotina. O que a gente pode colocar do outro lado é isto: pela sua presença, o Vayaavor acontece, e as treze middot são ditas em voz alta no meio da noite.</div>
+    </div>
+    <button class="btn" data-vai="6">Continuar</button>
+    <button class="sair" data-sair="1">fechar</button>
+  </section>
+
+  <!-- 6 -->
+  <section class="tela" data-n="6">
+    <div class="kicker">As suas regras</div>
+    <h2>Como você quer ser chamado?</h2>
+    <p class="dim">Escolha o que quiser. Dá para mudar tudo depois, e "não me chama" é uma resposta perfeitamente boa.</p>
+    <button class="esc on" id="r1"><span class="marca"></span><span>Me conta às 15h como está a noite<small>uma mensagem por dia, só nos dias em que falta gente</small></span></button>
+    <button class="esc" id="r2"><span class="marca"></span><span>Me chama quando estiver quase<small>quando faltar 1 ou 2 pra fechar o minyan</small></span></button>
+    <button class="esc" id="r3"><span class="marca"></span><span>Nunca me chame depois de uma hora<small>escolha o horário abaixo e ninguém te incomoda depois dele</small></span></button>
+    <select id="silencio" style="display:none">
+      <option value="20:00">nunca depois das 20h</option>
+      <option value="21:00">nunca depois das 21h</option>
+      <option value="22:00" selected>nunca depois das 22h</option>
+      <option value="23:00">nunca depois das 23h</option>
+    </select>
+    <button class="esc" id="r4"><span class="marca"></span><span>Não me chama, eu apareço quando der<small>zero mensagens, e o site fica aqui quando você quiser</small></span></button>
+    <button class="btn" data-vai="7">Continuar</button>
+    <button class="sair" data-sair="1">fechar</button>
+  </section>
+
+  <!-- 7 -->
+  <section class="tela" data-n="7">
+    <div class="kicker">Dez segundos</div>
+    <h2>Como a gente te chama?</h2>
+    <input type="text" id="inNome" placeholder="seu nome, do jeito que te chamam" maxlength="40" autocomplete="given-name">
+    <input type="tel" id="inZap" placeholder="seu WhatsApp" maxlength="20" autocomplete="tel" inputmode="tel">
+    <div class="nota">O WhatsApp serve <b>só para os avisos que você acabou de escolher</b>. Ele não aparece no site, ninguém do grupo vê, e dá para apagar seu cadastro inteiro a qualquer hora, com dois toques.</div>
+    <button class="btn" id="btnCadastrar">Pronto, é isso</button>
+    <div class="status" id="stCad"></div>
+    <button class="sair" data-sair="1">deixa pra lá</button>
+  </section>
+
+  <!-- 8 -->
+  <section class="tela" data-n="8">
+    <div class="kicker">Você é um dos que completam</div>
+    <h2 id="ola">Boas-vindas.</h2>
+    <div class="resumo" id="resumo"></div>
+    <div class="caixa" style="text-align:center">
+      <div class="dim" style="font-size:13px">a noite de hoje</div>
+      <div class="placar" id="placar">…</div>
+      <div class="dim" id="placarLinha" style="font-size:13.5px">carregando</div>
+    </div>
+    <button class="btn" id="btnConfirmar">Confirmar pra esta noite</button>
+    <button class="btn sec" id="btnHojeNao">Hoje não consigo, me chama outro dia</button>
+    <div class="status" id="stFim"></div>
+    <button class="sair" id="btnSite">ver o site do minyan</button>
+  </section>
+
+  <footer>Selichot da meia-noite · Beit Yaakov · Kahal Am Echad</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var SB_URL = "https://yuxpaionwjufeosasppx.supabase.co";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1eHBhaW9ud2p1ZmVvc2FzcHB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzU1ODYsImV4cCI6MjA5Nzc1MTU4Nn0.1SXvSrQxfimObWXnXexdQLlHUWfnwBHmXPKsQhANwAY";
+  var $ = function(id){ return document.getElementById(id); };
+  var TOTAL_TELAS = 8, tela = 1, fechou = false;
+
+  function rpc(nome, corpo){
+    return fetch(SB_URL+"/rest/v1/rpc/"+nome, {
+      method:"POST",
+      headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+      body: JSON.stringify(corpo)
+    }).then(function(r){
+      return r.json().then(function(j){
+        if (!r.ok) throw new Error((j && j.message) || (nome+" "+r.status));
+        return j;
+      }, function(){ if (!r.ok) throw new Error(nome+" "+r.status); return null; });
+    });
+  }
+  function uuid(){
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){
+      var r = Math.random()*16|0; return (c==="x"?r:(r&0x3|0x8)).toString(16); });
+  }
+  var DEVICE = localStorage.getItem("mae-device");
+  if (!DEVICE){ DEVICE = uuid(); try{ localStorage.setItem("mae-device", DEVICE); }catch(e){} }
+
+  // o medidor: conta o caminho, nunca a pessoa. Nada aqui liga aparelho a nome.
+  function ev(nome, detalhe, semAparelho){
+    try{
+      fetch(SB_URL+"/rest/v1/rpc/minyan_ev", {
+        method:"POST",
+        headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+        body: JSON.stringify({p_device: semAparelho ? null : DEVICE, p_evento:nome, p_detalhe:detalhe || null}),
+        keepalive:true
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  function noiteAlvo(){
+    var p = {};
+    new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hour12:false})
+      .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    var d = new Date(Date.UTC(+p.year, +p.month-1, +p.day));
+    if (+p.hour >= 1) d.setUTCDate(d.getUTCDate()+1);
+    return d.toISOString().slice(0,10);
+  }
+  var NOITE = noiteAlvo();
+  var ORIGEM = (function(){ var m = /[?&]c=([A-Za-z0-9_-]{1,24})/.exec(location.search); return m ? m[1] : null; })();
+  var PESSOA = null, MEU_NOME = "";
+
+  function ir(n){
+    document.querySelectorAll(".tela").forEach(function(s){ s.classList.toggle("on", +s.getAttribute("data-n") === n); });
+    tela = n;
+    $("barra").style.width = Math.round(100 * n / TOTAL_TELAS) + "%";
+    window.scrollTo({top:0, behavior:"instant"});
+    ev("game_tela", "tela " + n);
+    if (n === 8) carregarPlacar();
+  }
+  document.querySelectorAll("[data-vai]").forEach(function(b){
+    b.addEventListener("click", function(){ ir(+b.getAttribute("data-vai")); });
+  });
+  document.querySelectorAll("[data-sair]").forEach(function(b){
+    b.addEventListener("click", function(){
+      fechou = true; ev("game_saiu", "tela " + tela);
+      location.href = "../";
+    });
+  });
+
+  // ---- tela 6: as regras
+  var regras = { r1:true, r2:false, r3:false, r4:false };
+  function pintarRegras(){
+    ["r1","r2","r3","r4"].forEach(function(k){ $(k).classList.toggle("on", regras[k]); });
+    $("silencio").style.display = regras.r3 ? "block" : "none";
+  }
+  ["r1","r2","r3","r4"].forEach(function(k){
+    $(k).addEventListener("click", function(){
+      if (k === "r4"){
+        regras.r4 = !regras.r4;
+        if (regras.r4){ regras.r1 = false; regras.r2 = false; regras.r3 = false; }
+      } else {
+        regras[k] = !regras[k];
+        if (regras[k]) regras.r4 = false;
+      }
+      pintarRegras();
+      ev("game_regra", k + (regras[k] ? " on" : " off"));
+    });
+  });
+  pintarRegras();
+
+  function frasesDasRegras(){
+    if (regras.r4) return ["a gente não te chama, e o site fica aqui quando você quiser"];
+    var f = [];
+    if (regras.r1) f.push("te contamos às <b>15h</b> como está a noite");
+    if (regras.r2) f.push("te chamamos quando faltar <b>1 ou 2</b> pra fechar");
+    if (regras.r3) f.push("ninguém te incomoda depois das <b>" + $("silencio").value.slice(0,2) + "h</b>");
+    if (!f.length) f.push("nenhum aviso escolhido, e tudo bem");
+    return f;
+  }
+
+  // ---- tela 7: cadastro
+  function soDigitos(s){ return (s||"").replace(/\D/g,""); }
+  $("btnCadastrar").addEventListener("click", function(){
+    var nome = $("inNome").value.trim().replace(/\s+/g," ");
+    var zap  = $("inZap").value.trim();
+    if (nome.length < 2){ $("stCad").textContent = "escreve seu nome pra gente saber quem chegou"; $("inNome").focus(); return; }
+    var precisaZap = regras.r1 || regras.r2;
+    if (precisaZap && !zap){ $("stCad").textContent = "pros avisos que você escolheu, a gente precisa do WhatsApp"; $("inZap").focus(); return; }
+    if (zap && (soDigitos(zap).length < 10 || soDigitos(zap).length > 13)){
+      $("stCad").textContent = "esse WhatsApp parece incompleto"; $("inZap").focus(); return;
+    }
+    var b = this; b.disabled = true; $("stCad").textContent = "guardando…";
+    rpc("minyan_pessoa_criar", {p_nome:nome, p_telefone: zap || null})
+      .then(function(r){
+        PESSOA = r.pessoa; MEU_NOME = r.nome;
+        try{
+          localStorage.setItem("mae-pessoa", PESSOA);
+          localStorage.setItem("mae-pessoa-nome", MEU_NOME);
+          if (zap) localStorage.setItem("mae-pessoa-zap", "1");
+        }catch(e){}
+        ev("game_cadastro", "convite", true);
+        return rpc("minyan_regras_salvar", {
+          p_pessoa: PESSOA,
+          p_aviso_tarde: !!regras.r1 && !regras.r4,
+          p_chama_se_faltar: (regras.r2 && !regras.r4) ? 2 : null,
+          p_silencio_depois: (regras.r3 && !regras.r4) ? $("silencio").value : null,
+          p_nunca: !!regras.r4
+        });
+      })
+      .then(function(){
+        $("stCad").textContent = "";
+        $("ola").textContent = "Boas-vindas, " + MEU_NOME + ".";
+        $("resumo").innerHTML = "A partir de hoje: " + frasesDasRegras().join(" · ") + ".";
+        ev("game_fim", "cadastrou");
+        ir(8);
+      })
+      .catch(function(e){ $("stCad").textContent = (e.message || "não deu. Tenta de novo"); })
+      .then(function(){ b.disabled = false; });
+  });
+
+  // ---- tela 8: o placar e a confirmação
+  function carregarPlacar(){
+    rpc("minyan_painel2", {p_noite:NOITE}).then(function(p){
+      $("placar").textContent = p.total;
+      $("placarLinha").innerHTML = p.faltam > 0
+        ? "confirmados até agora · faltam <b style='color:var(--gold-bright)'>" + p.faltam + "</b>"
+        : "confirmados. <b style='color:var(--ok)'>O minyan está de pé, e o próximo faz a corrente crescer</b>";
+    }).catch(function(){ $("placar").textContent = "·"; $("placarLinha").textContent = "o contador está fora do ar"; });
+  }
+  $("btnConfirmar").addEventListener("click", function(){
+    if (!PESSOA) { location.href = "../"; return; }
+    var b = this; b.disabled = true;
+    rpc("minyan_confirmar_nome", {p_noite:NOITE, p_pessoa:PESSOA, p_device:DEVICE})
+      .then(function(p){
+        try{ localStorage.setItem("mae-nome-"+NOITE, "1"); localStorage.setItem("mae-conf-"+NOITE, "0"); }catch(e){}
+        $("placar").textContent = p.total;
+        $("placarLinha").innerHTML = p.faltam > 0 ? "confirmados · faltam <b>" + p.faltam + "</b>" : "confirmados";
+        $("stFim").textContent = "pronto, " + MEU_NOME + ". Seu nome está na lista desta noite.";
+        b.textContent = "✓ Você está na lista";
+        ev("game_fim", "confirmou");
+      })
+      .catch(function(e){ $("stFim").textContent = e.message || "não foi. Tenta de novo"; b.disabled = false; });
+  });
+  $("btnHojeNao").addEventListener("click", function(){
+    $("stFim").textContent = "tudo bem. A gente te chama do jeito que você pediu.";
+    ev("game_fim", "hoje nao");
+  });
+  $("btnSite").addEventListener("click", function(){ location.href = "../"; });
+
+  // ---- medidor de abertura e de abandono
+  ev("game_abriu", ORIGEM || "sem marca");
+  rpc("minyan_visita_abre2", {p_device:DEVICE, p_origem: ORIGEM ? ORIGEM + "-convite" : "convite"}).catch(function(){});
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden && !fechou && tela < 8) ev("game_saiu", "tela " + tela);
+  });
+  $("barra").style.width = Math.round(100 / TOTAL_TELAS) + "%";
+})();
+</script>
+</body>
+</html>
