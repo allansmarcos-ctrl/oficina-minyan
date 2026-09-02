@@ -553,11 +553,16 @@
     var atual = meusMais(), novo = Math.max(0, Math.min(5, atual + d));
     if (novo === atual) return;
     ocupado = true;
-    var corpo = confirmadoNome()
+    // com nome, o evento vai SEM aparelho, igual ao confirmar com nome: quem promete
+    // gente ja esta na lista a vista de todos, e amarrar aparelho a nome aqui
+    // entregaria as noites em que essa mesma pessoa confirmou anonima.
+    var comNome = confirmadoNome();
+    var corpo = comNome
       ? {p_noite:NOITE, p_quantos:novo, p_pessoa:PESSOA}
       : {p_noite:NOITE, p_quantos:novo, p_device:DEVICE};
     rpc("minyan_mais", corpo)
       .then(function(p){
+        ev("mais", String(novo), comNome);
         setMeusMais(novo);
         $("stConf").textContent = novo === 0
           ? "só você, então. Já é o que importa."
@@ -565,11 +570,16 @@
         pintar(p, d > 0);
       })
       .catch(function(e){
-        if (/WhatsApp/.test(e.message || "")){
+        var msg = e.message || "";
+        if (/WhatsApp/.test(msg)){
+          ev("mais_nao", novo + " sem-zap", comNome);
           $("formZap").style.display = "block";
           $("inZapDepois").focus();
           $("stConf").textContent = "";
-        } else { $("stConf").textContent = "não foi. Confere a internet e tenta de novo"; }
+        } else {
+          if (/nome primeiro/.test(msg)) ev("mais_nao", novo + " sem-nome", comNome);
+          $("stConf").textContent = "não foi. Confere a internet e tenta de novo";
+        }
       })
       .then(function(){ ocupado = false; });
   }
@@ -633,7 +643,7 @@
         localStorage.setItem("mae-pessoa", PESSOA);
         localStorage.setItem("mae-pessoa-nome", MEU_NOME);
         if (zap){ TEM_ZAP = true; localStorage.setItem("mae-pessoa-zap", "1"); }
-        ev("game_cadastro", "site", true);
+        ev("game_cadastro", zap ? "site com-zap" : "site sem-zap", true);
         return confirmarComNome();
       })
       .catch(function(){ $("stConf").textContent = "não deu pra guardar. Confere a internet e tenta de novo"; })
