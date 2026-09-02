@@ -504,6 +504,9 @@
     var b = this; b.disabled = true;
     var chamada, subiu = false;
     if (acao === "sai-nome"){
+      // simetrico do ev("confirmar","nome") la embaixo: sem aparelho, porque e o
+      // momento em que um nome sai do banco. Sem isso, sair da lista nao deixa rastro.
+      ev("desistir", "nome", true);
       chamada = rpc("minyan_desistir_nome", {p_noite:NOITE, p_pessoa:PESSOA});
     } else if (acao === "desistir"){
       ev("desistir");
